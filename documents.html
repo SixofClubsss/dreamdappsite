@@ -1,0 +1,2211 @@
+<!doctype html>
+<html class="" lang="">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- generator meta tag -->
+    <!-- leave this for stats and Silex version check -->
+    <meta name="generator" content="Silex v2.2.14">
+    <!-- End of generator meta tag -->
+    <script src="js/jquery.js"></script>
+
+
+    <script src="js/front-end.js"></script>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/front-end.css">
+
+
+    <script class="silex-script"></script>
+
+    <title>dReams - Open source platform application for&nbsp;dApps built on DEROHE. - Documents</title>
+
+
+
+    <script src="js/onswipe.js" type="module"></script>
+    <script src="js/unslider-min.js"></script>
+    <link rel="stylesheet" href="css/unslider.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="description"
+        content="From games, to marketplaces, to blockchain services, to development tools. dReams has many avenues to explore on the first HE blockchain protocol.">
+    <link href="css/dReamerIcon.png" rel="shortcut icon">
+    <meta content="summary" property="twitter:card">
+    <meta property="og:type" content="website">
+    <meta property="twitter:title" content="Open source platform application for&nbsp;dApps built on DEROHE.">
+    <meta property="og:title" content="Open source platform application for&nbsp;dApps built on DEROHE.">
+    <meta property="twitter:description"
+        content="dApps built on DERO, the first homomorphic encryption blockchain protocol. ">
+    <meta property="og:description"
+        content="dApps built on DERO, the first homomorphic encryption blockchain protocol. ">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" class="silex-custom-font">
+    <link href="https://fonts.googleapis.com/css2?family=Macondo" rel="stylesheet" class="silex-custom-font">
+    <script src="js/script.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai-sublime.min.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll() 
+    </script>
+
+    <script>
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function randomFloat(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function Point(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+    </script>
+    <style>
+        body {
+            opacity: 0;
+            transition: .25s opacity ease;
+        }
+    </style>
+</head>
+
+<body
+    class="body-initial all-style prevent-resizable prevent-selectable editable-style hide-on-mobile enable-mobile silex-runtime silex-published"
+    data-current-page="page-documents">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="editable-style container-element silex-id-1685324503857-22"></div>
+    <section class="editable-style section-element silex-id-1685608214497-30 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685608214497-31 silex-element-content website-width prevent-draggable">
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1478366444112-1">
+        <div class="editable-style container-element silex-id-1478366444112-0 website-width" title="">
+            <div class="editable-style html-element silex-id-1685603979603-26 hide-on-mobile">
+                <div class="silex-element-content">
+                    <div>
+                        <canvas id="matrixCanv">Canvas is not supported in your browser.</canvas>
+                        <canvas id="matrixCanv2">Canvas is not supported in your browser.</canvas>
+                    </div>
+
+                    <script>
+                        var canvas = document.getElementById('matrixCanv'),
+                            ctx = canvas.getContext('2d'),
+                            canvas2 = document.getElementById('matrixCanv2'),
+                            ctx2 = canvas2.getContext('2d'),
+
+                            mc_cw = 480,
+                            mc_ch = 132,
+                            mc_arr = ['d', 'r', 'e', 'a', 'm', 's', 'o', 'p', 'i', 'v', 'a', 'c', 'y', 't', 'h', '6'],
+                            mc_MaxChar = 120,
+                            mc_falling = [],
+                            mc_font = 15,
+                            mc_maxColums = mc_cw / (mc_font);
+                        canvas.width = canvas2.width = mc_cw;
+                        canvas.height = canvas2.height = mc_ch;
+
+
+                        Point.prototype.draw_mc = function (ctx) {
+
+                            this.value = mc_arr[randomInt(0, mc_arr.length - 1)].toUpperCase();
+                            this.speed = randomFloat(1, 5);
+
+                            ctx2.fillStyle = "#562b7c"
+                            ctx2.font = mc_font + "px Macondo";
+                            ctx2.fillText(this.value, this.x, this.y);
+                            ctx.fillStyle = "#49bdfc";
+                            ctx.font = mc_font + "px Macondo";
+                            ctx.fillText(this.value, this.x, this.y);
+
+
+
+                            this.y += this.speed;
+                            if (this.y > mc_ch) {
+                                this.y = randomFloat(-100, 0);
+                                this.speed = randomFloat(2, 5);
+                            }
+                        }
+
+                        for (var i = 0; i < mc_maxColums; i++) {
+                            mc_falling.push(new Point(i * mc_font, randomFloat(-500, 0)));
+                        }
+
+
+                        var updateTopMatrix = function () {
+
+                            ctx.fillStyle = "rgba(0,0,0,0.06)";
+                            ctx.fillRect(0, 0, mc_cw, mc_ch);
+
+                            ctx2.clearRect(0, 0, mc_cw, mc_ch);
+
+                            var i = mc_falling.length;
+
+                            while (i--) {
+                                mc_falling[i].draw_mc(ctx);
+                                var v = mc_falling[i];
+                            }
+
+                            requestAnimationFrame(updateTopMatrix);
+                        }
+
+                        updateTopMatrix();
+                    </script>
+                </div>
+            </div>
+            <div class="editable-style image-element silex-id-1685316878854-5 hide-on-desktop"><img
+                    src="assets/dReamsText.png"></div>
+            <div class="editable-style text-element silex-id-1685437345449-20 hide-on-mobile style-content titleShadow">
+                <div class="silex-element-content normal">
+                    <h2>Interact with a variety of different products and services on Dero's decentralized
+                        application&nbsp;platform</h2>
+                </div>
+            </div><a class="editable-style image-element silex-id-1685162067662-1 hide-on-mobile noAction"
+                href="https://dreamdapps.io/"><img src="assets/dReamsText.png"></a>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685780261429-233 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685780261429-234 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685782199662-235 hide-on-desktop style-content boxShadow mobileDropDownGradient">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; text-align:center; font-size:23pt;">
+                            <b>Menu</b>
+                        </summary>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/">Home</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/documents">Documents</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/developers">Developers</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/videos">Videos</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/donate">Donate</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685731229347-1 page-documents paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685731229348-2 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685731252525-3 mainShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                <div
+                    class="editable-style text-element silex-id-1685731473949-5 hide-on-mobile page-documents paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <h1><u>Documents</u><br></h1>
+                        <p>dReams is actively developed and documentation is an evolving process. Here you will find
+                            general dReams and dApp usage guides and general Dero information.<br><br><a
+                                href="https://dreamdapps.io/videos" title="Videos">Video library</a></p>
+                        <p><a href="https://dreamdapps.io/developers" title="Developers">Developer guides</a></p>
+                        <p><a href="#community-bar" title="Community">Join the community</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="editable-style container-element silex-id-1685762358336-43 mainShadow hide-on-mobile">
+                <div
+                    class="editable-style html-element silex-id-1685736081353-10 page-documents paged-element hide-on-mobile style-documents textShadow paged-element-visible">
+                    <div class="silex-element-content">
+                        <h3><u>Dero</u></h3>
+                        <ul style="color:white; font-family:Varela Round; ">
+                            <li><a href="https://dero.io">Website</a></li>
+                            <li><a href="https://docs.dero.io">Documents</a></li>
+                            <li><a href="https://wiki.dero.io/wiki/index.php/Main_Page">Wiki</a></li>
+                            <li><a href="https://derostats.io">Derostats</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685731362934-4 hide-on-mobile page-documents paged-element textShadow style-content paged-element-visible">
+                    <div class="silex-element-content">
+                        <h3><u>dReams</u></h3>
+                        <ul style="color:white; font-family:Varela Round; ">
+                            <li><a href="#docs-start">Getting started</a></li>
+                            <li><a href="#docs-connect">Connecting</a></li>
+                            <li><a href="#docs-gnomon">Gnomon DB</a></li>
+                            <li><a href="#docs-ratings">Rating system</a></li>
+                            <li><a href="#docs-bacc">Baccarat</a></li>
+                            <li><a href="#docs-holdero">Holdero</a></li>
+                            <li><a href="#docs-derbnb">DerBnb</a></li>
+                            <li><a href="#docs-iluma">Iluma</a></li>
+                            <li><a href="#docs-dsports">dSports &amp; dPredictions</a></li>
+                            <li><a href="#docs-nfa">NFA</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685736166825-12 hide-on-mobile style-documents textShadow">
+                    <div class="silex-element-content">
+                        <h3><u>Exchanges</u></h3>
+                        <ul style="color:white; font-family:Varela Round; ">
+                            <li><a href="https://tradeogre.com/">TradeOgre</a></li>
+                            <li><a href="https://www.kucoin.com/">KuCoin</a></li>
+                            <li><a href="https://www.derodex.net/">Dero Dex</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685319209515-3 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685319209515-4 silex-element-content website-width prevent-draggable">
+            <a class="editable-style container-element silex-id-1685319579446-1 hide-on-desktop socialLink boxShadow"
+                href="https://t.me/dReamdApps">
+                <div class="editable-style image-element silex-id-1685319645760-3 socialLink"><img
+                        src="assets/telegramLinkDark.png"></div>
+            </a><a
+                class="editable-style container-element silex-id-1685320093778-12 hide-on-desktop socialLink boxShadow"
+                href="https://dero.io">
+                <div class="editable-style image-element silex-id-1685320163155-13"><img src="assets/deroLinkDark.png">
+                </div>
+            </a><a
+                class="editable-style container-element silex-id-1685319874193-11 hide-on-desktop socialLink boxShadow"
+                href="https://discord.gg/6BDqrzjtqJ">
+                <div class="editable-style image-element silex-id-1685319684780-4 socialLink"><img
+                        src="assets/discordLinkDark.png"></div>
+            </a>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685699822090-78 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685699822090-79 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685765184160-13 hide-on-desktop page-documents paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style text-element silex-id-1685765204098-14 style-mobilecontent textShadow hide-on-desktop page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p></p>
+                        <h1><u>Documents</u><br></h1>
+                        <p>dReams is actively developed and documentation is an evolving process. Here you will find
+                            general dReams and dApp usage guides and general Dero information.<br><br><a
+                                href="https://dreamdapps.io/videos" title="Videos">Video library</a></p>
+                        <p><a href="https://dreamdapps.io/developers" title="Developers">Developer guides</a><br></p>
+                        <p></p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685765336177-16 style-mobilecontent textShadow hide-on-desktop page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <h3><u>dReams</u></h3>
+                        <ul style="color:white; font-family:Varela Round; ">
+                            <li><a href="#docs-mobile-start">Getting started</a></li>
+                            <li><a href="#docs-mobile-connect">Connecting</a></li>
+                            <li><a href="#docs-mobile-gnomon">Gnomon DB</a></li>
+                            <li><a href="#docs-mobile-ratings">Rating system</a></li>
+                            <li><a href="#docs-mobile-bacc">Baccarat</a></li>
+                            <li><a href="#docs-mobile-holdero">Holdero</a></li>
+                            <li><a href="#docs-mobile-derbnb">DerBnb</a></li>
+                            <li><a href="#docs-mobile-iluma">Iluma</a></li>
+                            <li><a href="#docs-mobile-dsports">dSports &amp; dPredictions</a></li>
+                            <li><a href="#docs-mobile-nfa">NFA</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685765652584-19 hide-on-desktop page-documents paged-element style-mobilecontent textShadow paged-element-visible">
+                    <div class="silex-element-content">
+                        <h3><u>Dero</u></h3>
+                        <ul style="color:white; font-family:Varela Round; ">
+                            <li><a href="https://dero.io">Website</a></li>
+                            <li><a href="https://docs.dero.io">Documents</a></li>
+                            <li><a href="https://wiki.dero.io/wiki/index.php/Main_Page">Wiki</a></li>
+                            <li><a href="https://derostats.io">Derostats</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685765655262-20 hide-on-desktop page-documents paged-element style-mobilecontent textShadow paged-element-visible">
+                    <div class="silex-element-content">
+                        <h3><u>Exchanges</u></h3>
+                        <ul style="color:white; font-family:Varela Round; ">
+                            <li><a href="https://tradeogre.com/">TradeOgre</a></li>
+                            <li><a href="https://www.kucoin.com/">KuCoin</a></li>
+                            <li><a href="https://www.derodex.net/">Dero Dex</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685766918271-0 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685766918271-1 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685699842312-80 hide-on-desktop page-documents paged-element style-mobilecontent textShadow mainShadow paged-element-visible"
+                id="docs-mobile-start">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Getting started</u></h2>
+                        <p>You will need a registered <a href="https://dero.io/download.html"> Dero wallet.</a></p>
+                        <p>Download latest dReams release.</p>
+                        <p>Run <code>dReams-linux-amd64</code> <i>(or macOs/windows version).</i></p>
+                        <p>The first time you start dReams you will be asked which dApps you'd like.</p>
+                        <p>We recommend choosing all dApps on first start, you can remove any you don't want after
+                            you've first synced.</p>
+                        <p>Connect to your Dero wallet and daemon.</p>
+                        <p>Gnomon will sync, this can take around 30 seconds.</p>
+                        <h3>Once synced you are ready to Go.</h3>
+                        <p>To add or remove dApps, go to the menu/dApps tab and load any changes you'd like.</p>
+                        <p>Loading changes will disconnect your wallet. Gnomon will stay connected allowing immediate
+                            wallet reconnection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685767719201-5 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685767719202-6 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685767036980-3 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible"
+                id="docs-mobile-connect">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Connecting</u></h2>
+                        <p>For best performance and privacy, we advise you connect to a local daemon.
+                        </p>
+                        <p>Enter daemon and wallet rpc info in menu tab and press connect.</p>
+                        <p><b>D</b> &amp; <b>W</b> indicators will light up if connected.</p>
+                        <p>Gnomon will start to sync, its indicator will have a stripe through it.</p>
+                        <p>When Gnomon is fully synced, its indicator will turn solid.</p>
+                        <p>Check out the in app guide located in the menu tab for FAQs.</p>
+                        <p>Visit developers guide for build and development info.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685426424715-7 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685426424715-8 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685244554988-7 hide-on-mobile dropDownGradient boxShadow page-home paged-element page-documents page-videos page-developers paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <summary><a style="font-family:Varela Round; color:white; font-size:18pt; text-align:center;"
+                                href="https://dreamdapps.io/download"><b>Download</b></a></summary>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style html-element silex-id-1685245888226-10 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; text-align:center; font-size:18pt;">
+                            <b>Resources</b>
+                        </summary>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/documents">Documents</a>
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/developers">Developers</a>
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/videos">Videos</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="editable-style html-element silex-id-1685235375406-3 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="color:white; font-size:18pt; text-align:center;"><b>Services</b></summary>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    DerBnB</h3>
+                                <div class="popuptext" id="derBnbPopup" style="font-family:Varela Round;color:white;">
+                                    <p>Property rental management app</p>
+                                    <p>Mint property tokens</p>
+                                    <p>DerBnb profit share and TRVL tokens</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    dSports</h3>
+                                <div class="popuptext" id="dSportsPopup" style="font-family:Varela Round;color:white;">
+                                    <p>P2P sports betting</p>
+                                    <p>Deployable contracts</p>
+                                    <p><b>Current leagues:</b> EPL, MLS, MLB, NBA, NFL, NHL, MMA</p>
+                                    <p>dReam Service</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    dPredictions</h3>
+                                <div class="popuptext" id="dPredictionPopup"
+                                    style="font-family:Varela Round;color:white;">
+                                    <p>P2P predictions</p>
+                                    <p>Deployable contracts</p>
+                                    <p><b>Current markets:</b> BTC-USDT, DERO-USDT, XMR-USDT, BTC-DERO, BTC-XMR,
+                                        DERO-Difficulty, DERO-Block
+                                        Time, DERO-Block Number</p>
+                                    <p>dReam Service</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">Iluma
+                                </h3>
+                                <div class="popuptext" id="ilumaPopup" style="font-family:Varela Round;color:white;">
+                                    <p>On chain Tarot readings</p>
+                                    <p>Querent's companion</p>
+                                    <p>Created by Kalina Lux</p>
+                                    <p><a style="font-size:13pt;" href="https://tarotiluma.com/">More info</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="editable-style html-element silex-id-1685227733552-0 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; font-size:18pt; text-align:center;">
+                            <b>Games</b>
+                        </summary>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    Baccarat</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white;">
+                                    <p>Classic table game where closest to 9 wins</p>
+                                    <p>In game NFA's</p>
+                                    <p>Multiple tokens supported</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    Holdero</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white">
+                                    <p>Texas Hold'em style poker</p>
+                                    <p>In game G45's &amp; NFA's</p>
+                                    <p>Multiple tokens supported</p>
+                                    <p>Deployable contracts</p>
+                                    <p>Tournament games</p>
+                                    <p>dReam Tools</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div
+                class="editable-style html-element silex-id-1685783344371-238 dropDownGradient boxShadow hide-on-mobile">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; text-align:center; font-size:18pt;">
+                            <b>Menu</b>
+                        </summary>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/">Home</a>
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/download">Download</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/donate">Donate</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="#community-bar">Community</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="editable-style html-element silex-id-1685235976498-5 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; font-size:18pt; text-align:center;">
+                            <b>Assets</b>
+                        </summary>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; color:white; padding:2px; font-family:Varela Round;">
+                                    Marketplaces</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white;">
+                                    <p>Manage your Dero assets</p>
+                                    <p>dReams app has a NFA marketplace for in game assets</p>
+                                    <p>NFA Market app has a full unfiltered marketplace for all assets types</p>
+                                    <p>Mint NFA's with NFA Market app</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; color:white; padding:2px; font-family:Varela Round;">
+                                    Collections</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white;">
+                                    <p><b>AZYPC &amp; AZYPCB</b> - <i>Playing cards</i></p>
+                                    <p><b>SIXPC &amp; SIXPCB</b> - <i>Playing cards</i></p>
+                                    <p><b>Dero Seals</b> - <i>Avatars</i></p>
+                                    <p><b>Dero A-Team</b> - <i>Avatars</i></p>
+                                    <p><b>AZYDS</b> - <i>Themes and avatars</i></p>
+                                    <p><b>SIXART</b> - <i>Themes and avatars</i></p>
+                                    <p><b>Death by Cupcake</b> - <i>Avatars</i></p>
+                                    <p><b>High Strangeness</b> - <i>Avatars/themes/playing cards</i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <script>
+                        const popups = [...document.getElementsByClassName('info-popup')];
+
+                        window.addEventListener('click', ({ target }) => {
+                            const popup = target.closest('.info-popup');
+                            const clickedOnClosedPopup = popup && !popup.classList.contains('show');
+
+                            popups.forEach(p => p.classList.remove('show'));
+
+                            if (clickedOnClosedPopup) popup.classList.add('show');
+                        });
+
+                        var details = [...document.querySelectorAll('details')];
+                        document.addEventListener('click', function (e) {
+                            if (!details.some(f => f.contains(e.target))) {
+                                details.forEach(f => f.removeAttribute('open'));
+                            } else {
+                                details.forEach(f => !f.contains(e.target) ? f.removeAttribute('open') : '');
+                            }
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685512950382-7 hide-on-mobile page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685512950382-8 silex-element-content website-width prevent-draggable">
+            <div class="editable-style container-element silex-id-1685610683916-42"></div>
+            <div class="editable-style container-element silex-id-1685736759835-14 hide-on-mobile page-documents paged-element mainShadow paged-element-visible"
+                id="docs-start">
+                <div
+                    class="editable-style html-element silex-id-1685736759835-15 hide-on-mobile textShadow style-content page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h2 style="text-align:left"><u>Getting started</u></h2>
+                            <p>You will need a registered <a href="https://dero.io/download.html"> Dero wallet.</a></p>
+                            <p>Download latest dReams release.</p>
+                            <p>Run <code>dReams-linux-amd64</code> <i>(or macOs/windows version).</i></p>
+                            <p>The first time you start dReams you will be asked which dApps you'd like.</p>
+                            <p>We recommend choosing all dApps on first start, you can remove any you don't want after
+                                you've first synced.</p>
+                            <div class="top-tooltip">
+                                <p>Connect to your Dero wallet and daemon.</p>
+                                <img class="tooltiptext boxShadow" style="border-radius:12;"
+                                    src="assets/connectBox.png">
+                            </div>
+                            <p>Gnomon will sync, this can take around 30 seconds.</p>
+                            <h3>Once synced you are ready to Go.</h3>
+                            <p>To add or remove dApps, go to the menu/dApps tab and load any changes you'd like.</p>
+                            <p>Loading changes will disconnect your wallet. Gnomon will stay connected allowing
+                                immediate wallet reconnection.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="editable-style container-element silex-id-1685610065908-38 hide-on-mobile page-documents paged-element mainShadow paged-element-visible"
+                id="docs-connect">
+                <div
+                    class="editable-style html-element silex-id-1685610065908-39 hide-on-mobile page-documents paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h2 style="text-align:left"><u>Connecting</u></h2>
+                            <p>For best performance and privacy, we advise you connect to a local daemon.
+                            </p>
+                            <div class="top-tooltip">
+                                <p>Enter daemon and wallet rpc info in menu tab and press connect.</p>
+                                <img class="tooltiptext boxShadow" style="border-radius:13;"
+                                    src="assets/connectBox.png">
+                            </div>
+
+                            <div class="left-tooltip">
+                                <p><b>D</b> &amp; <b>W</b> indicators will light up if connected.</p>
+                                <img class="tooltiptext boxShadow" style="border-radius:12; margin-right:25px;"
+                                    src="assets/syncedNo.png">
+                            </div>
+
+                            <div class="left-tooltip">
+                                <p>Gnomon will start to sync, its indicator will have a stripe through it.</p>
+                                <img class="tooltiptext boxShadow" style="border-radius:12;  margin-right:18px;"
+                                    src="assets/syncing.png">
+                            </div>
+
+                            <div class="left-tooltip">
+                                <p>When Gnomon is fully synced, its indicator will turn solid.</p>
+                                <img class="tooltiptext boxShadow" style="border-radius:12; margin-right:19px;"
+                                    src="assets/synced.png">
+                            </div>
+
+                            <p>Check out the in app guide located in the menu tab for FAQs.</p>
+                            <p>Visit developers guide for build and development info.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685731982157-6 page-documents paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685731982158-7 silex-element-content website-width prevent-draggable">
+            <div class="editable-style container-element silex-id-1685610894158-43 hide-on-mobile page-documents paged-element mainShadow paged-element-visible"
+                id="docs-gnomon">
+                <div
+                    class="editable-style html-element silex-id-1685610894158-44 hide-on-mobile page-documents paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h2 style="text-align:left"><u>Gnomon DB</u></h2>
+                            <p>dReams uses <b>Gnomon</b> for much of its functionality.</p>
+                            <p>Gnomon creates a local database of SCID's and their stored blockchain data for use in
+                                your dApps.</p>
+                            <div class="top-tooltip">
+                                <p>For <b>best performance</b> it is recommended you sync Gnomon using a <b>local
+                                        node.</b></p>
+                                <img class="tooltiptext boxShadow" style="border-radius:12;"
+                                    src="assets/localNodeConn.png">
+                            </div>
+                            <p>Gnomon will fast sync to current chain height on first start.</p>
+                            <div class="right-tooltip">
+                                <p>You can check how many SCID's your index contains in the asset tab.</p>
+                                <img class="tooltiptext boxShadow" style="border-radius:12; margin-right: 3px;"
+                                    src="assets/indexedSCIDs.png">
+                            </div>
+                            <p>To resync your Gnomon DB, close dReams.</p>
+
+                            <div class="right-tooltip">
+                                <p>In your dReams directory, delete <code>gnomondb</code> folder.</p>
+                                <img class="tooltiptext boxShadow" style="border-radius:12; margin-left: 115px;"
+                                    src="assets/gnomondbDir.png">
+                            </div>
+                            <p>Start dReams and connect to fast sync DB.</p>
+                            <h3><a href="https://github.com/civilware/Gnomon">View Gnomon repo</a></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="editable-style image-element silex-id-1685612747180-47"><img src="assets/gnomon.gif"></div>
+            </div>
+            <div class="editable-style container-element silex-id-1685819452774-30 hide-on-mobile page-documents paged-element mainShadow paged-element-visible"
+                id="docs-ratings">
+                <div
+                    class="editable-style image-element silex-id-1685819510402-34 hide-on-mobile page-documents paged-element paged-element-visible">
+                    <img src="assets/ratingSystem.png">
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685819649844-36 style-content textShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h2 style="text-align:left"><u>Rating system</u></h2>
+                            <p>dReams has many deployable SC's that are owned and operated by individual users. To help
+                                promote
+                                accountability all self deployed SC's are tied into dReams rating system. Users can rate
+                                any SC positively or
+                                negatively. Ratings are weight based on the transaction value. There are four rating
+                                tiers that are displayed beside SCID's. If a SC falls below the bottom rating, it will
+                                be
+                                omitted from the public index of SC's.</p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685820131079-39 hide-on-mobile page-documents paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Positive rating.</p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685820147887-41 hide-on-mobile page-documents paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Negative rating.</p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685820065940-38 hide-on-mobile page-documents paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Everyone starts here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685761804869-38 page-documents paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685761804870-39 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style image-element silex-id-1685761448457-33 hide-on-mobile page-documents paged-element paged-element-visible">
+                <img id="docs-bacc" src="assets/chipIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685738318801-18 page-documents paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685738318801-19 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685731997190-8 hide-on-mobile page-documents paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685732056811-9 hide-on-mobile page-documents paged-element textShadow style-content paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h2 style="text-align:left"><u>Baccarat</u></h2>
+                            <p>Select table from bottom drop down.</p>
+                            <p><b>Current tables:</b>
+                            </p>
+                            <ul style="color:white; font-family:Varela Round;">
+                                <li>dReams</li>
+                                <li>HGC</li>
+                            </ul>
+                            <p></p>
+                            <p>Select amount and click <u>Player</u>, <u>Banker</u> or <u>Tie</u>.</p>
+                            <p>Wait for block and hand results will show.</p>
+                            <p>You can search hands played by entering TXID in search bar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685738451732-20 hide-on-mobile page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685738451732-21 silex-element-content website-width prevent-draggable">
+            <div class="editable-style container-element silex-id-1685738451732-22 hide-on-mobile page-documents paged-element mainShadow paged-element-visible"
+                id="docs-holdero">
+                <div
+                    class="editable-style html-element silex-id-1685738451732-23 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h2 style="text-align:left"><u>Holdero</u></h2>
+                            <p>Very similar to Texas Hold'em poker. You can envision Holdero to playing at a friends
+                                table. Owner of the table SC sets up the game and runs the table.</p>
+                            <p><b>Key game differences are:</b></p>
+                            <ul style="color:white; font-family:Varela Round;">
+                                <li>As most games are played with private assets, Holdero does not have "all in"
+                                    functionality. Your choice will be either to call or to fold.</li>
+                                <li>Blinds are only placed on deal by the small and big blind positions. Other players
+                                    do not need to call blinds, but do need to match any ante.</li>
+                                <li>Players can only raise the bet once, before it is capped at that raise.</li>
+                            </ul>
+                            <p>All game actions are on chain transactions facilitated by Dero SC's. There will be at
+                                least one block in between each move.</p>
+                            <p>All Holdero SC's are validated in the app, setting all tables at the same standard.</p>
+                            <p>Tables are tied into dReams rating system. We advised you only play at tables you are
+                                familiar with or have good ratings.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685740375994-28 hide-on-mobile page-documents paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685740375994-29 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h3 style="text-align:left"><u>How to join a table</u></h3>
+                            <p>Connect and sync dReams. If you'd like to use a custom name or avatar, select it now.</p>
+                            <p>In the <u>Holdero</u> tab, select a table SCID from the contract list to connect to it.
+                            </p>
+                            <p>Click the <u>View</u> button at top of contract list to go to selected table.</p>
+                            <p>If seats are available, you can click <u>Sit</u> to join the table.</p>
+                            <p>When it's your turn you will be prompted to <u>Deal Hand</u>.</p>
+                            <p>This will submit blinds and any antes, once the block has gone through you will see your
+                                cards.</p>
+                            <p><b>Current tables:</b></p>
+                            <ul style="color:white; font-family:Varela Round;">
+                                <li>Dero</li>
+                                <li>dReams</li>
+                                <li>HGC</li>
+                            </ul>
+                            <p>There are also public and private versions of each table variety. Public will be listed
+                                in the public index of
+                                Holdero tables. Private will not.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685742746243-40 mainShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685742746243-41 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h3 style="text-align:left"><u>FAQs</u></h3>
+                            <p><b>Players</b></p>
+                            <p>How do I get a name?</p>
+                            <p style="text-align:center;">
+                                <i>All names used in dReams are registered Dero wallet names. To use a custom name,
+                                    register a Dero wallet name and select it from bottom drop down in Holdero contracts
+                                    section before sitting down.</i>
+                            </p>
+                            <p>How do I get a avatar?</p>
+                            <p style="text-align:center;">
+                                <i>All avatars used in dReams are Dero assets. Purchase a supported avatar and select it
+                                    from the menu/asset tab (left side drop down) before sitting down.</i>
+                            </p>
+                            <p><b>Owners</b></p>
+                            <p>How do I set my tables name?</p>
+                            <p style="text-align:center;">
+                                <i>You can change the table name using Set Headers the menu/asset tab. If the main
+                                    Gnomon SC index hasn't added your table yet you'll see a not ready message, check
+                                    back soon and it will be ready.</i>
+                            </p>
+                            <p>What is clean table?</p>
+                            <p style="text-align:center;">
+                                <i>Clean table is like a reset button. It shuffles the deck, resetting and moving to
+                                    start of the next hand, and can retrieve funds if needed.</i>
+                            </p>
+                            <p>Can I run my table without being present?</p>
+                            <p style="text-align:center;">
+                                <i>Yes. See owners control section and dReam Tools for more info.</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685741674238-36 mainShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685741674238-37 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h3 style="text-align:left"><u>Owner controls</u></h3>
+                            <p>Connect and sync dReams. If you'd like to use a custom name or avatar, select it now.</p>
+                            <p>Click on a table that your wallet owns.</p>
+                            <p>The table owner controls will appear at the bottom, choose how many players, blinds and
+                                any antes.</p>
+                            <p>Press <u>Set Table</u> and once that block has gone through your table is open for others
+                                to join.</p>
+                            <p>If you'd like to start the game before all players have joined, press <u>Force Start</u>
+                                in the owners controls.</p>
+                            <p>You can manually timeout a inactive player in the owners controls. Auto timeouts can be
+                                used with 2 min or 5 min setting.</p>
+                            <p>Owners can run the table without playing by pressing <u>Leave</u> when it is their turn.
+                                The game will continue to run
+                                as long as the owner has left the app running.</p>
+                            <p>It is advise you close your table when done playing. In the owners control, choose close
+                                table from the players
+                                drop down and press <u>Set Table</u>.</p>
+                            <p>If you your wallet holds any of the custom decks of cards, you can share them with others
+                                at the table by
+                                selecting your faces and back from the menu/asset tab and clicking <u>Shared decks</u>.
+                                Tell your players to also click <u>Shared decks</u> on their end to see your cards.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685740794134-32 mainShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685740794134-33 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h3 style="text-align:left"><u>How to install a table</u></h3>
+                            <p>Connect and sync dReams.</p>
+                            <p>In the <u>Holdero</u> tab, go to your owned section in contract area.</p>
+                            <p>Choose <u>Unlock table</u> (<i>or new table if you are a previous table owner</i>), then
+                                select which kind of table you'd like to install.</p>
+                            <p>Confirming will install your new table SC. Gnomon will pick it up and add to your local
+                                index.</p>
+                            <p>Once the main Gnomon SC index has added your newly installed table SC, it will be visible
+                                for other players to join (<i>if public</i>).</p>
+                            <p>If you have created a private table, it will show in your owned list. You can give that
+                                table SCID to other players to add to their index to join.</p>
+                            <p>Owners get 1.5% of every pot to help cover their gas costs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685743725438-44 mainShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685743725438-45 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h3 style="text-align:left"><u>dReam Tools</u></h3>
+                            <p>dReam Tools are custom Holdero tools for beginners and pros.</p>
+                            <p>They are unlocked with ownership of certain NFA assets. Check for the dReam Tools badge
+                                in the market.</p>
+                            <p><b>Main features:</b></p>
+                            <ul style="color:white; font-family:Varela Round;">
+                                <li>Odds calculator that can help beginners play like pros, always knowing exactly what
+                                    they are up against.
+                                </li>
+                                <li>Bot players</li>
+                                <ul style="color:white; font-family:Varela Round;">
+                                    <li>The bots are from scratch algos written in house.</li>
+                                    <li>They have 12 params for users to customize allowing each bot to
+                                        have different playing styles.</li>
+                                    <li>Random attributes can be used to give each decision further uniqueness.</li>
+                                </ul>
+                                <li>Stats tracking for user and bot players.</li>
+                                <li>All stats remain local on your machine.</li>
+                            </ul>
+                            <p>Open dReam Tools menu using the <u>Tools</u> button.</p>
+                            <p><b>More docs to come...</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685761692604-36 page-documents paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685761692605-37 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style image-element silex-id-1685761501266-35 page-documents paged-element hide-on-mobile paged-element-visible">
+                <img id="docs-derbnb" src="assets/derbnbIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685761063092-24 hide-on-mobile page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685761063092-25 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685761063092-26 hide-on-mobile page-documents paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685761063092-27 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h2 style="text-align:left"><u>DerBnb</u></h2>
+                            <p>Property rental management app, facilitated through Dero SC's.</p>
+                            <p>Properties are minted as Dero tokens.</p>
+                            <p>Owners can manage their rental properties.</p>
+                            <p>Renters search and request rentals.</p>
+                            <p>DerBnb rating system for owners and renters.</p>
+                            <p>Profit share and TRVL tokens.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685767790708-7 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685767790708-8 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685699979644-81 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible"
+                id="docs-mobile-gnomon">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Gnomon DB</u></h2>
+                        <p>dReams uses <b>Gnomon</b> for much of its functionality.</p>
+                        <p>Gnomon creates a local database of SCID's and their stored blockchain data for use in your
+                            dApps.</p>
+                        <p>For <b>best performance</b> it is recommended you sync Gnomon using a <b>local node.</b></p>
+                        <p>Gnomon will fast sync to current chain height on first start.</p>
+                        <p>You can check how many SCID's your index contains in the asset tab.</p>
+                        <p>To resync your Gnomon DB, close dReams.</p>
+                        <p>In your dReams directory, delete <code>gnomondb</code> folder.</p>
+                        <p>Start dReams and connect to fast sync DB.</p>
+                        <h3><a href="https://github.com/civilware/Gnomon">View Gnomon repo</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685761917216-40 page-documents paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685761917216-41 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style image-element silex-id-1685761951637-42 page-documents paged-element hide-on-mobile paged-element-visible">
+                <img id="docs-iluma" src="assets/serviceIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685821834496-43 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685821834497-44 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685821834497-45 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible"
+                id="docs-mobile-ratings">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Rating system</u></h2>
+                        <p>dReams has many deployable SC's that are owned and operated by individual users. To help
+                            promote
+                            accountability all self deployed SC's are tied into dReams rating system. Users can rate any
+                            SC positively or
+                            negatively. Ratings are weight based on the transaction value. There are four rating tiers
+                            that are displayed beside SCID's. If a SC falls below the bottom rating, it will be
+                            omitted from the public index of SC's.</p>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style image-element silex-id-1685821952302-49 page-documents paged-element hide-on-desktop boxShadow paged-element-visible">
+                <img src="assets/ratingSystem.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685822337551-50 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685822337552-51 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style image-element silex-id-1685822446021-54 page-documents paged-element hide-on-desktop paged-element-visible">
+                <img id="docs-mobile-bacc" src="assets/chipIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685767868447-9 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685767868448-10 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685768123425-11 page-documents paged-element hide-on-desktop style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Baccarat</u></h2>
+                        <p>Select table from bottom drop down.</p>
+                        <p><b>Current tables:</b>
+                        </p>
+                        <ul style="color:white; font-family:Varela Round;">
+                            <li>dReams</li>
+                            <li>HGC</li>
+                        </ul>
+                        <p></p>
+                        <p>Select amount and click <u>Player</u>, <u>Banker</u> or <u>Tie</u>.</p>
+                        <p>Wait for block and hand results will show.</p>
+                        <p>You can search hands played by entering TXID in search bar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685744701872-56 hide-on-mobile page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685744701872-57 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685744701872-58 hide-on-mobile page-documents paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685744701872-59 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h2 style="text-align:left"><u>Iluma</u></h2>
+                            <p>On chain Tarot readings.</p>
+                            <p>Querent's companion and custom Tarot cards created by Kalina Lux.</p>
+                            <p>Each Tarot card is a Dero asset from the Iluma collection.</p>
+                            <p>Pull one or three card readings.</p>
+                            <p>Search your previously pulled hands.</p>
+                            <p><a style="font-size:13pt;" href="https://tarotiluma.com/">More info</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685744616753-48 page-documents paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685744616753-49 silex-element-content website-width prevent-draggable">
+            <div class="editable-style container-element silex-id-1685744616753-50 page-documents paged-element mainShadow hide-on-mobile paged-element-visible"
+                id="docs-dsports">
+                <div
+                    class="editable-style html-element silex-id-1685744616753-51 textShadow style-content page-documents paged-element hide-on-mobile paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h2 style="text-align:left"><u>dSports</u></h2>
+                            <p>P2P sports betting facilitated through Dero SC's.</p>
+                            <p>SC's are installed and ran by individual owners.</p>
+                            <p>Games have predefined time limits ensuring that either payout get sent out on time, or
+                                the game becomes
+                                void and the players can retrieve their funds.</p>
+                            <p>All dSports SC's are validated in the dReams, ensure to check the times as those may vary
+                                <u>minimally</u> from owner to owner.
+                            </p>
+                            <p><b>Current leagues:</b></p>
+                            <ul style="color:white; font-family:Varela Round;">
+                                <li>EPL</li>
+                                <li>MLS</li>
+                                <li>MLB</li>
+                                <li>NBA</li>
+                                <li>NFL</li>
+                                <li>NHL</li>
+                                <li>MMA</li>
+                            </ul>
+                            <p>Click on a SCID in the <u>Sports</u> tab to view its details.</p>
+                            <p>If there are active games, you can select which game from the drop down.</p>
+                            <p>There can be multiple active games on each SC.</p>
+                            <p>dSports SC's are tied into dReams rating system.</p>
+                            <p>As there is no house, odds are based only on the bets placed in that dSports game. A
+                                deposit on game set up coupled with the bet amount can create instant odds for players.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="editable-style container-element silex-id-1685744723375-64 page-documents paged-element mainShadow hide-on-mobile paged-element-visible"
+                id="docs-dprediction">
+                <div
+                    class="editable-style html-element silex-id-1685744723375-65 textShadow style-content page-documents paged-element hide-on-mobile paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h2 style="text-align:left"><u>dPredictions</u></h2>
+                            <p>P2P binary based predictions facilitated through Dero SC's.</p>
+                            <p>SC's are installed and ran by individual owners.</p>
+                            <p>Predictions have predefined time limits ensuring that either payout get sent out on time,
+                                or the prediction becomes
+                                void and the players can retrieve their funds.</p>
+                            <p>All dPredictions SC's are validated in the dReams, ensure to check times as those may
+                                vary <u>greatly</u> from owner to owner.</p>
+                            <p><b>Current markets:</b></p>
+                            <ul style="color:white; font-family:Varela Round;">
+                                <li>BTC-USDT</li>
+                                <li>DERO-USDT</li>
+                                <li>XMR-USDT</li>
+                                <li>BTC-DERO</li>
+                                <li>BTC-XMR</li>
+                                <li>DERO-Difficulty</li>
+                                <li>DERO-Block Time</li>
+                                <li>DERO-Block Number</li>
+                            </ul>
+                            <p>Click on a SCID in the <u>Prediction</u> tab to view its details.</p>
+                            <p>dPrediction SC's will only have one active prediction at a time.</p>
+                            <p>dPrediction SC's are tied into dReams rating system.</p>
+                            <p>All data used in dPrediction price feeds comes from 3 sources, without any third parties.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685747563371-73 mainShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685747563371-74 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h3 style="text-align:left"><u>How to install and use</u></h3>
+                            <p>Connect and sync dReams.</p>
+                            <p>Go to either <u>Sports</u> or <u>Prediction</u> tab depending on which SC you'd like to
+                                install.</p>
+                            <p>Choose <u>Unlock</u> (<i>or New if you are a previous dSport or dPrediction owner</i>),
+                                then select which kind of SC you'd like to install.</p>
+                            <p>Confirming will install your new SC. Gnomon will pick it up and add to your local index.
+                            </p>
+                            <p>Once the main Gnomon SC index has added your newly installed SC, it will be visible for
+                                other users (<i>if public</i>).</p>
+                            <p>If you have created a private SC, it will show in your owned list. You can give that
+                                table SCID to other players to add to their index to view it.</p>
+                            <p>Owners get 1.5% of every pot to help cover their gas costs.</p>
+                            <p>Ownership of either SC unlocks dReam Service.</p>
+                            <p>To set up a new game or prediction, click <u>Owners Options</u> in your owned tab section
+                                to open the dSport and dPrediction control.</p>
+                            <p>Choose your game or prediction settings and press <u>Set Game/Prediction</u> To initiate
+                                game or prediction.</p>
+                            <p>You have a 2 min (<i>5 min for prediction</i>) cancellation window once initiated. Once
+                                that window has passed players can place their bets.</p>
+                            <p>If you are not using dReam Service, you will need to manually facilitate payouts
+                                (<i>press payout button in Owners Options</i>).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685750038587-79 mainShadow hide-on-mobile page-documents paged-element paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685750038587-80 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h3 style="text-align:left"><u>dReam Service</u></h3>
+                            <p>Full automation to facilitate all of your owned dSports and dPredictions SC'c.</p>
+                            <p>Two part service with both Gui and Cli usage.</p>
+                            <p>First part runs all payouts and data feeds for any dSports or dPrediction SC's owned by
+                                the connected wallet.</p>
+                            <p>Second part is a integrated address service, which all owners to facilitate usage of
+                                their SC's though Dero
+                                transactions instead of direct SC interactions.</p>
+                            <p>They can be used in tandem or separately.</p>
+                            <p>dSports and dPredictions SC's have multi signer capability, allowing owners to connect up
+                                to 9 service wallets to
+                                a single SC to greatly expand throughput.</p>
+                            <p>In your owned tab section, click on <u>Owners Options</u> to open the owners menu. The
+                                <u>Service</u> tab
+                                contains the dReam Service Gui.
+                            </p>
+                            <p>Connecting your wallet to <code>dReamService-linux-amd64</code> will run dReam Service
+                                Cli for minimal resource
+                                requirements.</p>
+                            <p>dReam Service stores a local DB of all processed transactions. There are manual features
+                                allowing for the service
+                                to ran call by call.</p>
+                            <p>dReam Service stores a local DB of all processed transactions. There are manual features
+                                allowing for the service
+                                to ran call by call.</p>
+                            <p><b>More docs to come...</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685777907476-219 hide-on-mobile page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685777907476-220 silex-element-content website-width prevent-draggable">
+            <div class="editable-style image-element silex-id-1685777907476-221 hide-on-mobile">
+                <img id="docs-nfa" src="assets/marketIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685757422004-0 hide-on-mobile page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685757422004-1 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685757422004-2 hide-on-mobile page-documents paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685757422004-3 textShadow style-content hide-on-mobile page-documents paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h2 style="text-align:left"><u>NFA</u></h2>
+                            <p><i>
+                                    Forge non-fungible assets with a built-in trustless and decentralized marketplace.
+                                    NFA creators and owners are in total
+                                    control of their assets, which can be sold for a set price, or through a public
+                                    auction where anyone can submit
+                                    bids.</i>
+                            </p>
+
+                            <p><a style="font-size:13pt;"
+                                    href=" https://github.com/civilware/artificer-nfa-standard">See ART-NFA-MS1
+                                    standard.</a></p>
+                            <p><b>NFA's are a powerful new asset standard unique to Dero.</b></p>
+                            <p>dReams currently has two NFA marketplace interfaces.</p>
+                            <p>The dReams app has a integrated market for its in game assets.</p>
+                            <p>The NFA-Market app is a unfiltered marketplace for all minted NFA's.</p>
+                            <p>The NFA-Market has minting tools for single NFA's and entire collection mints.</p>
+                            <p><a style="font-size:13pt;" href="https://tarotiluma.com/">See minting tutorials for more
+                                    info on minting.</a></p>
+                            <p>Our market functionality can be imported for use in other dApps, coupling with dReams
+                                game asset ecosystem. Or
+                                they can set up for custom filters.</p>
+                            <p><a style="font-size:13pt;" href="https://tarotiluma.com/">See developers guide for more
+                                    info.</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685758180533-8 page-documents paged-element mainShadow hide-on-mobile paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685758180533-9 page-documents paged-element hide-on-mobile textShadow style-documents paged-element-visible">
+                    <div class="silex-element-content">
+                        <div style="z-index: 3000;">
+                            <h2 style="text-align:left"><u>Collections</u></h2>
+                            <p><b>AZYPC &amp; AZYPCB</b> - <i>Playing cards</i></p>
+                            <p><b>SIXPC &amp; SIXPCB</b> - <i>Playing cards</i></p>
+                            <p><b>Dero Seals</b> - <i>Avatars</i></p>
+                            <p><b>Dero A-Team</b> - <i>Avatars</i></p>
+                            <p><b>AZYDS</b> - <i>Themes and avatars</i></p>
+                            <p><b>SIXART</b> - <i>Themes and avatars</i></p>
+                            <p><b>Death by Cupcake</b> - <i>Avatars</i></p>
+                            <p><b>High Strangeness</b> - <i>Avatars/themes/playing cards</i></p>
+                            <h3>More collections coming soon!</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685758806100-12 page-documents paged-element mainShadow hide-on-mobile paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685758806100-13 page-documents paged-element hide-on-mobile textShadow style-content paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h3 style="text-align:left"><u>How to buy</u></h3>
+                            <p>Connect and sync dReams.</p>
+                            <p>In the <u>Market</u> tab you can find any NFA's listed for auction or sale. Click on a
+                                listing to view its
+                                details.</p>
+                            <p>Click Bid or Buy to place a bid or make a purchase. Assets will be sent to wallet at time
+                                of sale. Auctioned
+                                assets will be sent when auction is closed to highest bidder.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685759422202-16 page-documents paged-element mainShadow hide-on-mobile paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685759422202-17 page-documents paged-element textShadow style-content hide-on-mobile paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h3 style="text-align:left"><u>How to list a NFA</u></h3>
+                            <p>Connect and sync dReams.</p>
+                            <p>In your <u>Asset</u> tab you can find any NFA's held by that wallet. Click on a asset and
+                                listing controls will
+                                appear below.</p>
+                            <p>Click <u>List</u> to open the listing menu.</p>
+                            <p>Fill out your listing params.</p>
+                            <p>Max listing duration is one week (<i>168 hr</i>).</p>
+                            <p>You can choose to use a charity donation address and designated % for that address to
+                                receive upon sale.</p>
+                            <p>If charity is not required, you can use your address with 0%.</p>
+                            <p>You have a 5 min cancellation window once listed.</p>
+                            <p>Confirm your listing and others will now be able to view your asset in the marketplace.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685759672541-20 page-documents paged-element mainShadow hide-on-mobile paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685759672541-21 page-documents paged-element textShadow style-content hide-on-mobile paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <h3 style="text-align:left"><u>How send and claim NFA's</u></h3>
+                            <p>Connect and sync dReams.</p>
+                            <p>In your <u>Asset</u> tab you can find any NFA's held by that wallet. Click on a asset and
+                                listing controls will appear below.</p>
+                            <p>Click <u>Send Asset</u> to open the send menu.</p>
+                            <p>Fill out your destination address. You can also optionally send the SCID of that asset to
+                                the destination address in a encrypted Dero message.</p>
+                            <p>Once sent, your receiver will need to claim ownership of the NFA.</p>
+                            <p>This can be done by entering the SCID and clicking <u>Claim NFA</u> in the <u>Asset</u>
+                                tab.</p>
+                            <p>Click <u>Recheck Assets</u> to check your wallet for the newly claimed NFA.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685508526195-0 hide-on-mobile page-documents paged-element page-videos paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685508526196-1 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685508541673-2 mainShadow page-documents paged-element page-videos hide-on-mobile paged-element-visible">
+                <div
+                    class="editable-style text-element silex-id-1685523516213-49 page-documents paged-element style-content textShadow hide-on-mobile paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <h3>81% of us feel that we have no control over when data is collected
+                            about us.</h3>
+                    </div>
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685523901394-51 hide-on-mobile page-videos paged-element page-documents paged-element-visible">
+                    <img src="assets/4of5peep.png">
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685523469221-48 page-documents paged-element hide-on-mobile paged-element-visible">
+                    <img src="assets/81perc.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685523923449-52 style-contentright textShadow hide-on-mobile page-videos paged-element page-documents paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <h3>4 in 5 people think the risk of sharing their personal data
+                            outweighs the benefits.</h3>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685595726508-25 textShadow style-documents hide-on-mobile page-videos paged-element page-documents paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p><a href="https://www.pewresearch.org/internet/wp-content/uploads/sites/9/2019/11/Pew-Research-Center_PI_2019.11.15_Privacy_FINAL.pdf"
+                                title="Pew 2019 Americans and Privacy report">Source</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1478366450713-3 hide-on-mobile">
+        <div class="editable-style container-element silex-id-1478366450713-2 website-width" title=""
+            id="community-bar">
+            <div class="editable-style container-element silex-id-1685324420480-21 hide-on-mobile socialLink boxShadow">
+            </div>
+            <div class="editable-style container-element silex-id-1685324229388-20 hide-on-mobile socialLink boxShadow">
+            </div><a
+                class="editable-style container-element silex-id-1685764387621-0 socialLink boxShadow hide-on-mobile"
+                href="https://dero.io">
+                <div class="editable-style image-element silex-id-1685428042036-12"><img src="assets/deroLinkDark.png">
+                </div>
+            </a><a class="editable-style container-element silex-id-1685764517764-4 socialLink boxShadow hide-on-mobile"
+                href="https://discord.gg/6BDqrzjtqJ">
+                <div class="editable-style image-element silex-id-1685427998314-11 hide-on-mobile"><img
+                        src="assets/discordLinkDark.png"></div>
+            </a><a class="editable-style container-element silex-id-1685764642147-8 socialLink boxShadow hide-on-mobile"
+                href="https://t.me/dReamdApps">
+                <div class="editable-style image-element silex-id-1685427956991-10 hide-on-mobile"><img
+                        src="assets/telegramLinkDark.png"></div>
+            </a>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685423571466-4 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685423571467-5 silex-element-content website-width prevent-draggable">
+            <div class="editable-style image-element silex-id-1685423589591-6 hide-on-mobile"><img
+                    src="assets/dReamerUp.png"></div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685423117504-2 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685423117505-3 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685651967861-0 hide-on-mobile mainShadow">
+                <div class="silex-element-content">
+                    <div>
+                        <canvas id="matrixCanv3">Canvas is not supported in your browser.</canvas>
+                        <canvas id="matrixCanv4">Canvas is not supported in your browser.</canvas>
+                    </div>
+
+                    <script>
+                        var canvas3 = document.getElementById('matrixCanv3'),
+                            ctx3 = canvas3.getContext('2d'),
+                            canvas4 = document.getElementById('matrixCanv4'),
+                            ctx4 = canvas4.getContext('2d'),
+                            mc2_w = 1180,
+                            mc2_h = 313,
+                            mc2_arr = ['d', 'r', 'e', 'a', 'm', 's', 'o', 'p', 'i', 'v', 'a', 'c', 'y', 't', 'h', '6'],
+                            mc2_maxChar = 120,
+                            mc2_falling = [],
+                            mc2_font = 15,
+                            mc2_maxColums = mc2_w / (mc2_font);
+                        canvas3.width = canvas4.width = mc2_w;
+                        canvas3.height = canvas4.height = mc2_h;
+
+
+                        Point.prototype.draw_mc2 = function (ctx3) {
+
+                            this.value = mc2_arr[randomInt(0, mc2_arr.length - 1)].toUpperCase();
+                            this.speed = randomFloat(1, 6);
+
+
+                            ctx4.fillStyle = "#562b7c";
+                            ctx4.font = mc2_font + "px Macondo";
+                            ctx4.fillText(this.value, this.x, this.y);
+                            ctx3.fillStyle = "#49bdfc";
+                            ctx3.font = mc2_font + "px Macondo";
+                            ctx3.fillText(this.value, this.x, this.y);
+
+
+
+                            this.y += this.speed;
+                            if (this.y > mc2_h) {
+                                this.y = randomFloat(-100, 0);
+                                this.speed = randomFloat(2, 5);
+                            }
+                        }
+
+                        for (var i = 0; i < mc2_maxColums; i++) {
+                            mc2_falling.push(new Point(i * mc2_font, randomFloat(-500, 0)));
+                        }
+
+
+                        var updateBottomMatrix = function () {
+                            // background color
+                            ctx3.fillStyle = "rgba(0,0,0,0.06)";
+                            ctx3.fillRect(0, 0, mc2_w, mc2_h);
+
+                            ctx4.clearRect(0, 0, mc2_w, mc2_h);
+
+                            var i = mc2_falling.length;
+
+                            while (i--) {
+                                mc2_falling[i].draw_mc2(ctx3);
+                                var v = mc2_falling[i];
+                            }
+
+                            requestAnimationFrame(updateBottomMatrix);
+                        }
+
+                        updateBottomMatrix();
+                    </script>
+                </div>
+            </div>
+            <div class="editable-style image-element silex-id-1685266370674-21 hide-on-mobile"><img
+                    src="assets/DeroBanner.gif"></div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685768294069-12 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685768294069-13 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685768299227-14 page-documents paged-element hide-on-desktop style-mobilecontent mainShadow textShadow paged-element-visible"
+                id="docs-mobile-holdero">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Holdero</u></h2>
+                        <p>Very similar to Texas Hold'em poker. You can envision Holdero to playing at a friends table.
+                            Owner of the table SC sets up the game and runs the table.</p>
+                        <p><b>Key game differences are:</b></p>
+                        <ul style="color:white; font-size:18px; font-family:Varela Round;">
+                            <li>As most games are played with private assets, Holdero does not have "all in"
+                                functionality. Your choice will be either to call or to fold.</li>
+                            <li>Blinds are only placed on deal by the small and big blind positions. Other players do
+                                not need to call blinds, but do need to match any ante.</li>
+                            <li>Players can only raise the bet once, before it is capped at that raise.</li>
+                        </ul>
+                        <p>All game actions are on chain transactions facilitated by Dero SC's. There will be at least
+                            one block in between each move.</p>
+                        <p>All Holdero SC's are validated in the app, setting all tables at the same standard.</p>
+                        <p>Tables are tied into dReams rating system. We advised you only play at tables you are
+                            familiar with or have good ratings.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685440753936-22 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685440753937-23 silex-element-content website-width prevent-draggable">
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685768563740-15 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685768563741-16 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685768748295-17 page-documents paged-element hide-on-desktop style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>How to join a table</u></h3>
+                        <p>Connect and sync dReams. If you'd like to use a custom name or avatar, select it now.</p>
+                        <p>In the <u>Holdero</u> tab, select a table SCID from the contract list to connect to it.</p>
+                        <p>Click the <u>View</u> button at top of contract list to go to selected table.</p>
+                        <p>If seats are available, you can click <u>Sit</u> to join the table.</p>
+                        <p>When it's your turn you will be prompted to <u>Deal Hand</u>.</p>
+                        <p>This will submit blinds and any antes, once the block has gone through you will see your
+                            cards.</p>
+                        <p><b>Current tables:</b></p>
+                        <ul style="color:white; font-size:18px; font-family:Varela Round;">
+                            <li>Dero</li>
+                            <li>dReams</li>
+                            <li>HGC</li>
+                        </ul>
+                        <p>There are also public and private versions of each table variety. Public will be listed in
+                            the public index of
+                            Holdero tables. Private will not.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685768862709-18 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685768862709-19 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685768862709-20 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>How to install a table</u></h3>
+                        <p>Connect and sync dReams.</p>
+                        <p>In the <u>Holdero</u> tab, go to your owned section in contract area.</p>
+                        <p>Choose <u>Unlock table</u> (<i>or new table if you are a previous table owner</i>), then
+                            select which kind of table you'd like to install.</p>
+                        <p>Confirming will install your new table SC. Gnomon will pick it up and add to your local
+                            index.</p>
+                        <p>Once the main Gnomon SC index has added your newly installed table SC, it will be visible for
+                            other players to join (<i>if public</i>).</p>
+                        <p>If you have created a private table, it will show in your owned list. You can give that table
+                            SCID to other players to add to their index to join.</p>
+                        <p>Owners get 1.5% of every pot to help cover their gas costs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769002860-27 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769002860-28 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685769002860-29 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>FAQs</u></h3>
+                        <p><b>Players</b></p>
+                        <p>How do I get a name?</p>
+                        <p style="text-align:center;">
+                            <i>All names used in dReams are registered Dero wallet names. To use a custom name, register
+                                a Dero wallet name and select it from bottom drop down in Holdero contracts section
+                                before sitting down.</i>
+                        </p>
+                        <p>How do I get a avatar?</p>
+                        <p style="text-align:center;">
+                            <i>All avatars used in dReams are Dero assets. Purchase a supported avatar and select it
+                                from the menu/asset tab (left side drop down) before sitting down.</i>
+                        </p>
+                        <p><b>Owners</b></p>
+                        <p>How do I set my tables name?</p>
+                        <p style="text-align:center;">
+                            <i>You can change the table name using Set Headers the menu/asset tab. If the main Gnomon SC
+                                index hasn't added your table yet you'll see a not ready message, check back soon and it
+                                will be ready.</i>
+                        </p>
+                        <p>What is clean table?</p>
+                        <p style="text-align:center;">
+                            <i>Clean table is like a reset button. It shuffles the deck, resetting and moving to start
+                                of the next hand, and can retrieve funds if needed.</i>
+                        </p>
+                        <p>Can I run my table without being present?</p>
+                        <p style="text-align:center;">
+                            <i>Yes. See owners control section and dReam Tools for more info.</i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769101727-33 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769101727-34 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685769101727-35 hide-on-desktop style-mobilecontent mainShadow textShadow">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>Owner controls</u></h3>
+                        <p>Connect and sync dReams. If you'd like to use a custom name or avatar, select it now.</p>
+                        <p>Click on a table that your wallet owns.</p>
+                        <p>The table owner controls will appear at the bottom, choose how many players, blinds and any
+                            antes.</p>
+                        <p>Press <u>Set Table</u> and once that block has gone through your table is open for others to
+                            join.</p>
+                        <p>If you'd like to start the game before all players have joined, press <u>Force Start</u> in
+                            the owners controls.</p>
+                        <p>You can manually timeout a inactive player in the owners controls. Auto timeouts can be used
+                            with 2 min or 5 min setting.</p>
+                        <p>Owners can run the table without playing by pressing <u>Leave</u> when it is their turn. The
+                            game will continue to run
+                            as long as the owner has left the app running.</p>
+                        <p>It is advise you close your table when done playing. In the owners control, choose close
+                            table from the players
+                            drop down and press <u>Set Table</u>.</p>
+                        <p>If you your wallet holds any of the custom decks of cards, you can share them with others at
+                            the table by
+                            selecting your faces and back from the menu/asset tab and clicking <u>Shared decks</u>. Tell
+                            your players to also click <u>Shared decks</u> on their end to see your cards.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769265566-39 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769265566-40 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685769265566-41 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>dReam Tools</u></h3>
+                        <p>dReam Tools are custom Holdero tools for beginners and pros.</p>
+                        <p>They are unlocked with ownership of certain NFA assets. Check for the dReam Tools badge in
+                            the market.</p>
+                        <p><b>Main features:</b></p>
+                        <ul style="color:white; font-family:Varela Round;">
+                            <li>Odds calculator that can help beginners play like pros, always knowing exactly what they
+                                are up against.
+                            </li>
+                            <li>Bot players</li>
+                            <ul style="color:white; font-family:Varela Round;">
+                                <li>The bots are from scratch algos written in house.</li>
+                                <li>They have 12 params for users to customize allowing each bot to
+                                    have different playing styles.</li>
+                                <li>Random attributes can be used to give each decision further uniqueness.</li>
+                            </ul>
+                            <li>Stats tracking for user and bot players.</li>
+                            <li>All stats remain local on your machine.</li>
+                        </ul>
+                        <p>Open dReam Tools menu using the <u>Tools</u> button.</p>
+                        <p><b>More docs to come...</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685822501281-55 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685822501281-56 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style image-element silex-id-1685822501281-57 hide-on-desktop page-documents paged-element paged-element-visible">
+                <img id="docs-mobile-derbnb" src="assets/derbnbIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769340598-45 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769340598-46 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685769340598-47 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>DerBnb</u></h2>
+                        <p>Property rental management app, facilitated through Dero SC's.</p>
+                        <p>Properties are minted as Dero tokens.</p>
+                        <p>Owners can manage their rental properties.</p>
+                        <p>Renters search and request rentals.</p>
+                        <p>DerBnb rating system for owners and renters.</p>
+                        <p>Profit share and TRVL tokens.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685822529154-61 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685822529154-62 page-documents paged-element silex-element-content website-width prevent-draggable paged-element-visible">
+            <div
+                class="editable-style image-element silex-id-1685822529154-63 page-documents paged-element hide-on-desktop paged-element-visible">
+                <img id="docs-mobile-iluma" src="assets/serviceIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769477390-51 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769477390-52 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685769477390-53 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Iluma</u></h2>
+                        <p>On chain Tarot readings.</p>
+                        <p>Querent's companion and custom Tarot cards created by Kalina Lux.</p>
+                        <p>Each Tarot card is a Dero asset from the Iluma collection.</p>
+                        <p>Pull one or three card readings.</p>
+                        <p>Search your previously pulled hands.</p>
+                        <p><a style="font-size:13pt;" href="https://tarotiluma.com/">More info</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769732836-57 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769732836-58 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685769732836-59 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible"
+                id="docs-mobile-dsports">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>dSports</u></h2>
+                        <p>P2P sports betting facilitated through Dero SC's.</p>
+                        <p>SC's are installed and ran by individual owners.</p>
+                        <p>Games have predefined time limits ensuring that either payout get sent out on time, or the
+                            game becomes
+                            void and the players can retrieve their funds.</p>
+                        <p>All dSports SC's are validated in the dReams, ensure to check the times as those may vary
+                            <u>minimally</u> from owner to owner.
+                        </p>
+                        <p><b>Current leagues:</b></p>
+                        <ul style="color:white; font-size:18px; font-family:Varela Round;">
+                            <li>EPL</li>
+                            <li>MLS</li>
+                            <li>MLB</li>
+                            <li>NBA</li>
+                            <li>NFL</li>
+                            <li>NHL</li>
+                            <li>MMA</li>
+                        </ul>
+                        <p>Click on a SCID in the <u>Sports</u> tab to view its details.</p>
+                        <p>If there are active games, you can select which game from the drop down.</p>
+                        <p>There can be multiple active games on each SC.</p>
+                        <p>dSports SC's are tied into dReams rating system.</p>
+                        <p>As there is no house, odds are based only on the bets placed in that dSports game. A deposit
+                            on game set up coupled with the bet amount can create instant odds for players.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769874590-63 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769874590-64 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685769874590-65 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>dPredictions</u></h2>
+                        <p>P2P binary based predictions facilitated through Dero SC's.</p>
+                        <p>SC's are installed and ran by individual owners.</p>
+                        <p>Predictions have predefined time limits ensuring that either payout get sent out on time, or
+                            the prediction becomes
+                            void and the players can retrieve their funds.</p>
+                        <p>All dPredictions SC's are validated in the dReams, ensure to check times as those may vary
+                            <u>greatly</u> from owner to owner.
+                        </p>
+                        <p><b>Current markets:</b></p>
+                        <ul style="color:white; font-size:18px; font-family:Varela Round;">
+                            <li>BTC-USDT</li>
+                            <li>DERO-USDT</li>
+                            <li>XMR-USDT</li>
+                            <li>BTC-DERO</li>
+                            <li>BTC-XMR</li>
+                            <li>DERO-Difficulty</li>
+                            <li>DERO-Block Time</li>
+                            <li>DERO-Block Number</li>
+                        </ul>
+                        <p>Click on a SCID in the <u>Prediction</u> tab to view its details.</p>
+                        <p>dPrediction SC's will only have one active prediction at a time.</p>
+                        <p>dPrediction SC's are tied into dReams rating system.</p>
+                        <p>All data used in dPrediction price feeds comes from 3 sources, without any third parties.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685769932762-69 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685769932762-70 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685769932762-71 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>How to install and use</u></h3>
+                        <p>Connect and sync dReams.</p>
+                        <p>Go to either <u>Sports</u> or <u>Prediction</u> tab depending on which SC you'd like to
+                            install.</p>
+                        <p>Choose <u>Unlock</u> (<i>or New if you are a previous dSport or dPrediction owner</i>), then
+                            select which kind of SC you'd like to install.</p>
+                        <p>Confirming will install your new SC. Gnomon will pick it up and add to your local index.</p>
+                        <p>Once the main Gnomon SC index has added your newly installed SC, it will be visible for other
+                            users (<i>if public</i>).</p>
+                        <p>If you have created a private SC, it will show in your owned list. You can give that table
+                            SCID to other players to add to their index to view it.</p>
+                        <p>Owners get 1.5% of every pot to help cover their gas costs.</p>
+                        <p>Ownership of either SC unlocks dReam Service.</p>
+                        <p>To set up a new game or prediction, click <u>Owners Options</u> in your owned tab section to
+                            open the dSport and dPrediction control.</p>
+                        <p>Choose your game or prediction settings and press <u>Set Game/Prediction</u> To initiate game
+                            or prediction.</p>
+                        <p>You have a 2 min (<i>5 min for prediction</i>) cancellation window once initiated. Once that
+                            window has passed players can place their bets.</p>
+                        <p>If you are not using dReam Service, you will need to manually facilitate payouts (<i>press
+                                payout button in Owners Options</i>).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685770033537-75 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685770033537-76 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685770033537-77 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>dReam Service</u></h3>
+                        <p>Full automation to facilitate all of your owned dSports and dPredictions SC'c.</p>
+                        <p>Two part service with both Gui and Cli usage.</p>
+                        <p>First part runs all payouts and data feeds for any dSports or dPrediction SC's owned by the
+                            connected wallet.</p>
+                        <p>Second part is a integrated address service, which all owners to facilitate usage of their
+                            SC's though Dero
+                            transactions instead of direct SC interactions.</p>
+                        <p>They can be used in tandem or separately.</p>
+                        <p>dSports and dPredictions SC's have multi signer capability, allowing owners to connect up to
+                            9 service wallets to
+                            a single SC to greatly expand throughput.</p>
+                        <p>In your owned tab section, click on <u>Owners Options</u> to open the owners menu. The
+                            <u>Service</u> tab
+                            contains the dReam Service Gui.
+                        </p>
+                        <p>Connecting your wallet to <code>dReamService-linux-amd64</code> will run dReam Service Cli
+                            for minimal resource
+                            requirements.</p>
+                        <p>dReam Service stores a local DB of all processed transactions. There are manual features
+                            allowing for the service
+                            to ran call by call.</p>
+                        <p>dReam Service stores a local DB of all processed transactions. There are manual features
+                            allowing for the service
+                            to ran call by call.</p>
+                        <p><b>More docs to come...</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685822548553-67 page-documents paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685822548553-68 page-documents paged-element silex-element-content website-width prevent-draggable paged-element-visible">
+            <div
+                class="editable-style image-element silex-id-1685822548553-69 page-documents paged-element hide-on-desktop paged-element-visible">
+                <img id="docs-mobile-nfa" src="assets/marketIcon.png">
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685770147401-81 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685770147401-82 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685770147401-83 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>NFA</u></h2>
+                        <p><i>
+                                Forge non-fungible assets with a built-in trustless and decentralized marketplace. NFA
+                                creators and owners are in total
+                                control of their assets, which can be sold for a set price, or through a public auction
+                                where anyone can submit
+                                bids.</i>
+                        </p>
+                        <p><a style="font-size:13pt;" href=" https://github.com/civilware/artificer-nfa-standard">See
+                                ART-NFA-MS1 standard.</a></p>
+                        <p><b>NFA's are a powerful new asset standard unique to Dero.</b></p>
+                        <p>dReams currently has two NFA marketplace interfaces.</p>
+                        <p>The dReams app has a integrated market for its in game assets.</p>
+                        <p>The NFA-Market app is a unfiltered marketplace for all minted NFA's.</p>
+                        <p>The NFA-Market has minting tools for single NFA's and entire collection mints.</p>
+                        <p><a style="font-size:13pt;" href="https://tarotiluma.com/">See minting tutorials for more info
+                                on minting.</a></p>
+                        <p>Our market functionality can be imported for use in other dApps, coupling with dReams game
+                            asset ecosystem. Or
+                            they can set up for custom filters.</p>
+                        <p><a style="font-size:13pt;" href="https://tarotiluma.com/">See developers guide for more
+                                info.</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685770283398-87 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685770283398-88 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685770283398-89 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h2 style="text-align:left"><u>Collections</u></h2>
+                        <p><b>AZYPC &amp; AZYPCB</b> - <i>Playing cards</i></p>
+                        <p><b>SIXPC &amp; SIXPCB</b> - <i>Playing cards</i></p>
+                        <p><b>Dero Seals</b> - <i>Avatars</i></p>
+                        <p><b>Dero A-Team</b> - <i>Avatars</i></p>
+                        <p><b>AZYDS</b> - <i>Themes and avatars</i></p>
+                        <p><b>SIXART</b> - <i>Themes and avatars</i></p>
+                        <p><b>Death by Cupcake</b> - <i>Avatars</i></p>
+                        <p><b>High Strangeness</b> - <i>Avatars/themes/playing cards</i></p>
+                        <h3>More collections coming soon!</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685770393950-93 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685770393950-94 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685770393950-95 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>How to buy</u></h3>
+                        <p>Connect and sync dReams.</p>
+                        <p>In the <u>Market</u> tab you can find any NFA's listed for auction or sale. Click on a
+                            listing to view its
+                            details.</p>
+                        <p>Click Bid or Buy to place a bid or make a purchase. Assets will be sent to wallet at time of
+                            sale. Auctioned
+                            assets will be sent when auction is closed to highest bidder.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685770487541-99 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685770487541-100 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685770487541-101 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>How to list a NFA</u></h3>
+                        <p>Connect and sync dReams.</p>
+                        <p>In your <u>Asset</u> tab you can find any NFA's held by that wallet. Click on a asset and
+                            listing controls will
+                            appear below.</p>
+                        <p>Click <u>List</u> to open the listing menu.</p>
+                        <p>Fill out your listing params.</p>
+                        <p>Max listing duration is one week (<i>168 hr</i>).</p>
+                        <p>You can choose to use a charity donation address and designated % for that address to receive
+                            upon sale.</p>
+                        <p>If charity is not required, you can use your address with 0%.</p>
+                        <p>You have a 5 min cancellation window once listed.</p>
+                        <p>Confirm your listing and others will now be able to view your asset in the marketplace.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685770610652-105 hide-on-desktop page-documents paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685770610652-106 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685770610652-107 hide-on-desktop page-documents paged-element style-mobilecontent mainShadow textShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <h3 style="text-align:left"><u>How send and claim NFA's</u></h3>
+                        <p>Connect and sync dReams.</p>
+                        <p>In your <u>Asset</u> tab you can find any NFA's held by that wallet. Click on a asset and
+                            listing controls will appear below.</p>
+                        <p>Click <u>Send Asset</u> to open the send menu.</p>
+                        <p>Fill out your destination address. You can also optionally send the SCID of that asset to the
+                            destination address in a encrypted Dero message.</p>
+                        <p>Once sent, your receiver will need to claim ownership of the NFA.</p>
+                        <p>This can be done by entering the SCID and clicking <u>Claim NFA</u> in the <u>Asset</u> tab.
+                        </p>
+                        <p>Click <u>Recheck Assets</u> to check your wallet for the newly claimed NFA.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685697662660-62 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685697662661-63 silex-element-content website-width prevent-draggable">
+            <div class="editable-style image-element silex-id-1685697674267-64 hide-on-desktop"><img
+                    src="assets/dReamerUp.png"></div>
+            <div
+                class="editable-style image-element silex-id-1685822355763-52 page-documents paged-element hide-on-mobile paged-element-visible">
+                <img src="assets/chipIcon.png">
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685697475777-59 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685697475777-60 silex-element-content website-width prevent-draggable">
+            <div class="editable-style image-element silex-id-1685697535828-61 hide-on-desktop mainShadow"><img
+                    src="assets/DeroBanner.gif"></div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685782785078-236 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685782785079-237 silex-element-content website-width prevent-draggable">
+        </div>
+    </section>
+</body>
+
+</html>

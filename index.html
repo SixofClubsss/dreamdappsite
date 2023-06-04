@@ -1,0 +1,1284 @@
+<!doctype html>
+<html class="" lang="">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- generator meta tag -->
+    <!-- leave this for stats and Silex version check -->
+    <meta name="generator" content="Silex v2.2.14">
+    <!-- End of generator meta tag -->
+    <script src="js/jquery.js"></script>
+
+
+    <script src="js/front-end.js"></script>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/front-end.css">
+
+
+    <script class="silex-script"></script>
+
+    <title>dReams - Open source platform application for&nbsp;dApps built on DEROHE. - Home</title>
+
+
+
+    <script src="js/onswipe.js" type="module"></script>
+    <script src="js/unslider-min.js"></script>
+    <link rel="stylesheet" href="css/unslider.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="description"
+        content="From games, to marketplaces, to blockchain services, to development tools. dReams has many avenues to explore on the first HE blockchain protocol.">
+    <link href="css/dReamerIcon.png" rel="shortcut icon">
+    <meta content="summary" property="twitter:card">
+    <meta property="og:type" content="website">
+    <meta property="twitter:title" content="Open source platform application for&nbsp;dApps built on DEROHE.">
+    <meta property="og:title" content="Open source platform application for&nbsp;dApps built on DEROHE.">
+    <meta property="twitter:description"
+        content="dApps built on DERO, the first homomorphic encryption blockchain protocol. ">
+    <meta property="og:description"
+        content="dApps built on DERO, the first homomorphic encryption blockchain protocol. ">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" class="silex-custom-font">
+    <link href="https://fonts.googleapis.com/css2?family=Macondo" rel="stylesheet" class="silex-custom-font">
+    <script src="js/script.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai-sublime.min.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll() 
+    </script>
+
+    <script>
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function randomFloat(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function Point(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+    </script>
+    <style>
+        body {
+            opacity: 0;
+            transition: .25s opacity ease;
+        }
+    </style>
+</head>
+
+<body
+    class="body-initial all-style prevent-resizable prevent-selectable editable-style hide-on-mobile enable-mobile silex-runtime silex-published"
+    data-current-page="page-home">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="editable-style container-element silex-id-1685324503857-22"></div>
+    <section class="editable-style section-element silex-id-1685608214497-30 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685608214497-31 silex-element-content website-width prevent-draggable">
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1478366444112-1">
+        <div class="editable-style container-element silex-id-1478366444112-0 website-width" title="">
+            <div class="editable-style html-element silex-id-1685603979603-26 hide-on-mobile">
+                <div class="silex-element-content">
+                    <div>
+                        <canvas id="matrixCanv">Canvas is not supported in your browser.</canvas>
+                        <canvas id="matrixCanv2">Canvas is not supported in your browser.</canvas>
+                    </div>
+
+                    <script>
+                        var canvas = document.getElementById('matrixCanv'),
+                            ctx = canvas.getContext('2d'),
+                            canvas2 = document.getElementById('matrixCanv2'),
+                            ctx2 = canvas2.getContext('2d'),
+
+                            mc_cw = 480,
+                            mc_ch = 132,
+                            mc_arr = ['d', 'r', 'e', 'a', 'm', 's', 'o', 'p', 'i', 'v', 'a', 'c', 'y', 't', 'h', '6'],
+                            mc_MaxChar = 120,
+                            mc_falling = [],
+                            mc_font = 15,
+                            mc_maxColums = mc_cw / (mc_font);
+                        canvas.width = canvas2.width = mc_cw;
+                        canvas.height = canvas2.height = mc_ch;
+
+
+                        Point.prototype.draw_mc = function (ctx) {
+
+                            this.value = mc_arr[randomInt(0, mc_arr.length - 1)].toUpperCase();
+                            this.speed = randomFloat(1, 5);
+
+                            ctx2.fillStyle = "#562b7c"
+                            ctx2.font = mc_font + "px Macondo";
+                            ctx2.fillText(this.value, this.x, this.y);
+                            ctx.fillStyle = "#49bdfc";
+                            ctx.font = mc_font + "px Macondo";
+                            ctx.fillText(this.value, this.x, this.y);
+
+
+
+                            this.y += this.speed;
+                            if (this.y > mc_ch) {
+                                this.y = randomFloat(-100, 0);
+                                this.speed = randomFloat(2, 5);
+                            }
+                        }
+
+                        for (var i = 0; i < mc_maxColums; i++) {
+                            mc_falling.push(new Point(i * mc_font, randomFloat(-500, 0)));
+                        }
+
+
+                        var updateTopMatrix = function () {
+
+                            ctx.fillStyle = "rgba(0,0,0,0.06)";
+                            ctx.fillRect(0, 0, mc_cw, mc_ch);
+
+                            ctx2.clearRect(0, 0, mc_cw, mc_ch);
+
+                            var i = mc_falling.length;
+
+                            while (i--) {
+                                mc_falling[i].draw_mc(ctx);
+                                var v = mc_falling[i];
+                            }
+
+                            requestAnimationFrame(updateTopMatrix);
+                        }
+
+                        updateTopMatrix();
+                    </script>
+                </div>
+            </div>
+            <div class="editable-style image-element silex-id-1685316878854-5 hide-on-desktop"><img
+                    src="assets/dReamsText.png"></div>
+            <div class="editable-style text-element silex-id-1685437345449-20 hide-on-mobile style-content titleShadow">
+                <div class="silex-element-content normal">
+                    <h2>Interact with a variety of different products and services on Dero's decentralized
+                        application&nbsp;platform</h2>
+                </div>
+            </div>
+            <div
+                class="editable-style image-element silex-id-1685437558451-21 hide-on-mobile page-home paged-element paged-element-visible">
+                <img src="assets/dReamerMain.png">
+            </div><a class="editable-style image-element silex-id-1685162067662-1 hide-on-mobile noAction"
+                href="https://dreamdapps.io/"><img src="assets/dReamsText.png"></a>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685780261429-233 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685780261429-234 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style html-element silex-id-1685782199662-235 hide-on-desktop style-content boxShadow mobileDropDownGradient">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; text-align:center; font-size:23pt;">
+                            <b>Menu</b>
+                        </summary>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/">Home</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/documents">Documents</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/developers">Developers</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/videos">Videos</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:21pt;"
+                                        href="https://dreamdapps.io/donate">Donate</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685319209515-3 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685319209515-4 silex-element-content website-width prevent-draggable">
+            <a class="editable-style container-element silex-id-1685319579446-1 hide-on-desktop socialLink boxShadow"
+                href="https://t.me/dReamdApps">
+                <div class="editable-style image-element silex-id-1685319645760-3 socialLink"><img
+                        src="assets/telegramLinkDark.png"></div>
+            </a><a
+                class="editable-style container-element silex-id-1685320093778-12 hide-on-desktop socialLink boxShadow"
+                href="https://dero.io">
+                <div class="editable-style image-element silex-id-1685320163155-13"><img src="assets/deroLinkDark.png">
+                </div>
+            </a><a
+                class="editable-style container-element silex-id-1685319874193-11 hide-on-desktop socialLink boxShadow"
+                href="https://discord.gg/6BDqrzjtqJ">
+                <div class="editable-style image-element silex-id-1685319684780-4 socialLink"><img
+                        src="assets/discordLinkDark.png"></div>
+            </a>
+        </div>
+    </section>
+    <section
+        class="container-element editable-style silex-id-1474394621033-3 section-element prevent-resizable page-home paged-element page-download page-videos paged-element-visible">
+
+        <div
+            class="editable-style silex-element-content silex-id-1474394621032-2 container-element website-width selected">
+            <div
+                class="editable-style container-element silex-id-1685161598045-0 hide-on-mobile page-page-1 page-home paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style text-element silex-id-1685162894127-6 hide-on-mobile page-page-1 page-home paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>dReams is a open source platform application that houses multiple <i>desktop</i>&nbsp;dApps
+                            built on <a href="https://dero.io">Dero</a>. From games, to marketplaces, to blockchain
+                            services, to development tools. dReams has many avenues to explore.<br></p><span
+                            class="_wysihtml-temp-caret-fix"
+                            style="position: absolute; display: block; min-width: 1px; z-index: 99999;">﻿</span>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685249326965-14 hide-on-mobile page-home paged-element textShadow style-content paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Leveraging Dero's private L1, dReams gives users new ways to interact on chain while
+                            preserving privacy. With features like encrypted messaging, private balances and local
+                            Gnomon DB, you are in control of your data.&nbsp;<br></p><span
+                            class="_wysihtml-temp-caret-fix"
+                            style="position: absolute; display: block; min-width: 1px; z-index: 99999;">﻿</span>
+                    </div>
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685237513805-7 hide-on-mobile page-home paged-element style-content textShadow paged-element-visible">
+                    <div class="silex-element-content">
+                        <div>
+                            <div>
+                                <p><i>View Repo</i></p>
+                                <a href="https://github.com/SixofClubsss/dReams"><img style="socialLink" ;
+                                        src="https://badgen.net/badge/icon/github?icon=github&amp;label"></a>
+                            </div>
+                            <div>
+                                <p><i>Available for</i></p>
+                                <img src="https://svgshare.com/i/ZhY.svg">
+                                <img src="https://svgshare.com/i/ZjP.svg">
+                                <img src="https://svgshare.com/i/Zhy.svg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="editable-style text-element silex-id-1685512729272-6 style-contentright textShadow">
+                    <div class="silex-element-content normal">
+                        <h3>Experience a new world of dApps.&nbsp;</h3>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685561573015-0 page-home paged-element textShadow style-contentright paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <h3>Let's dReam of a world where privacy is valued and where the individual has control of their
+                            data.&nbsp;</h3>
+                    </div>
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685700411248-82 hide-on-mobile page-home paged-element paged-element-visible">
+                    <img src="assets/marketIcon.png">
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685700524322-85 hide-on-mobile page-home paged-element paged-element-visible">
+                    <img src="assets/chipIcon.png">
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685700479914-83 hide-on-mobile page-home paged-element paged-element-visible">
+                    <img src="assets/derbnbIcon.png">
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685700523918-84 hide-on-mobile page-home paged-element paged-element-visible">
+                    <img src="assets/serviceIcon.png">
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685730449481-0 hide-on-mobile page-home paged-element paged-element-visible">
+                    <img src="assets/gnomonIcon.png">
+                </div>
+            </div>
+            <div
+                class="editable-style html-element silex-id-1685314750653-0 hide-on-mobile page-home paged-element silex-component-slideshow silex-use-height-not-minheight mainShadow paged-element-visible">
+                <div class="silex-element-content">
+                    <div id="parent_1685824301214_5">
+                        <!-- preview -->
+
+                        <div id="id_1685824301214_5">
+                            <!-- runtime -->
+                            <!-- the whole slideshow -->
+                            <ul class="prodotype-runtime">
+
+                                <li>
+                                    <figure class="slide-0">
+
+                                        <div class="slide-image">
+
+                                        </div>
+
+                                    </figure>
+                                </li>
+
+                                <li>
+                                    <figure class="slide-1">
+
+                                        <div class="slide-image">
+
+                                        </div>
+
+                                    </figure>
+                                </li>
+
+                                <li>
+                                    <figure class="slide-2">
+
+                                        <div class="slide-image">
+
+                                        </div>
+
+                                    </figure>
+                                </li>
+
+                                <li>
+                                    <figure class="slide-3">
+
+                                        <div class="slide-image">
+
+                                        </div>
+
+                                    </figure>
+                                </li>
+
+                                <li>
+                                    <figure class="slide-4">
+
+                                        <div class="slide-image">
+
+                                        </div>
+
+                                    </figure>
+                                </li>
+
+                                <li>
+                                    <figure class="slide-5">
+
+                                        <div class="slide-image">
+
+                                        </div>
+
+                                    </figure>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <script>
+                        (function () {
+                            // do not start in the editor (it would mess with the markup)
+                            if (!$('body').hasClass('silex-runtime')) return;
+
+                            var $slider = $('#id_1685824301214_5')
+                            var slider = $slider.unslider({
+                                'autoplay': true,
+                                'speed': 750,
+                                'delay': 12000,
+                                'index': 0,
+                                'nav': true,
+                                'animation': 'horizontal',
+                                'arrows': true
+                            });
+                            //  Listen to slide changes
+
+                            // apply element height to the images
+                            var silexElement = $slider.closest('.editable-style');
+                            var elementMinHeight = silexElement.css('height');
+                            var elementWidth = silexElement.css('width');
+                            $('#id_1685824301214_5 li .slide-image').css({
+                                'height': elementMinHeight
+                            });
+
+
+                            setTimeout(function () {
+                                // use onswipe.js
+                                // Fix #1127
+                                if (window.onSwipe) {
+                                    window.onSwipe('left', function () { $slider.data('unslider').next() })
+                                    window.onSwipe('right', function () { $slider.data('unslider').prev() })
+                                } else {
+                                    console.warn('onswipe.js script is not found, swipe gestures might no work')
+                                }
+                            }, 0)
+                        })();
+                    </script>
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685316908735-6 page-home paged-element hide-on-desktop mainShadow paged-element-visible">
+                <div class="editable-style html-element silex-id-1685320353179-14">
+                    <div class="silex-element-content">
+                        <div style="text-align:center">
+                            <a href="https://github.com/SixofClubsss/dReams"><img style="socialLink"
+                                    src="https://badgen.net/badge/icon/github?icon=github&amp;label"></a>
+                            <img src="https://svgshare.com/i/ZhY.svg">
+                            <img src="https://svgshare.com/i/ZjP.svg">
+                            <img src="https://svgshare.com/i/Zhy.svg">
+                            <a href="https://golang.org/"><img
+                                    src="https://img.shields.io/badge/Made%20with-Go-1f425f.svg"></a>
+                            <a href="https://pkg.go.dev/github.com/SixofClubsss/dReams"><img style="socialLink"
+                                    src="https://img.shields.io/badge/godoc-reference-blue.svg"></a>
+                            <img src="https://img.shields.io/github/go-mod/go-version/SixofClubsss/dReams.svg">
+                            <a href="https://goreportcard.com/report/github.com/SixofClubsss/dReams"><img
+                                    src="https://goreportcard.com/badge/github.com/SixofClubsss/dReams"></a>
+                            <a href="https://github.com/SixofClubsss/dReams/blob/main/LICENSE"><img
+                                    src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+                            <img src="https://badgen.net/github/stars/SixofClubsss/dReams">
+                            <img src="https://img.shields.io/github/tag/SixofClubsss/dReams.svg">
+                            <img src="https://img.shields.io/github/downloads/SixofClubsss/dReams/total.svg">
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685317071207-7 page-home paged-element hide-on-desktop style-mobilecontent textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p><a href="videos.html" class="">dReams</a> is a open source platform application that houses
+                            multiple <i>desktop</i>&nbsp;dApps built on <a href="https://dero.io">Dero</a>. From games,
+                            to marketplaces, to blockchain services, to development tools. dReams has many avenues to
+                            explore.</p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685317133511-8 page-home paged-element boxShadow paged-element-visible">
+                    <img src="assets/slide1.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685317545023-14 hide-on-desktop page-home paged-element style-mobilecontent textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Leveraging Dero's private L1, dReams gives users new ways to interact while preserving
+                            privacy. With features like encrypted messaging and local Gnomon DB, you are in control of
+                            your data. </p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685317737292-19 page-home paged-element boxShadow paged-element-visible">
+                    <img src="assets/slide2.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685317681216-18 hide-on-desktop page-home paged-element style-mobilecontent textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>The project originated in games development by integrating Dero games into a Fyne app. It was
+                            submitted in dArch Event 1 where it gained traction with other devs and began to integrate
+                            services. Written in Go, dReams source code aims to give developers easy access to tools for
+                            building Dero dApps. At this stage in development, dReams is available on <i>Desktop</i>
+                            only.</p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style image-element silex-id-1685317595670-16 page-home paged-element paged-element-visible">
+                    <img src="assets/gnomon.gif">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685317863900-21 page-home paged-element hide-on-desktop style-mobilecontent textShadow paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>The project originated in games development by integrating Dero games into a Fyne app. It was
+                            submitted in dArch Event 1 where it gained traction with other devs and began to integrate
+                            services. Written in Go, dReams source code aims to give developers easy access to tools for
+                            building Dero dApps. At this stage in development, dReams is available on <i>Desktop</i>
+                            only.</p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685318238279-2 style-mobilecontent textShadow hide-on-desktop">
+                    <div class="silex-element-content normal">
+                        <h1>Games</h1>
+                        <h2>Baccarat</h2>
+                        <p>Classic table game where closest to 9 wins</p>
+                        <p>In game NFA's</p>
+                        <p>Multiple tokens supported</p>
+                        <p><br></p>
+                        <h2>Holdero</h2>
+                        <p>Texas Hold'em style poker</p>
+                        <p>In game G45's &amp; NFA's</p>
+                        <p>Deployable contracts</p>
+                        <p>Tournaments</p>
+                        <p>Multiple tokens supported</p>
+                        <h1>Services</h1>
+                        <h2>DerBnb</h2>
+                        <p>Property rental management app</p>
+                        <p>Mint property tokens</p>
+                        <p>DerBnb profit share</p>
+                        <p><br></p>
+                        <h2>dSports</h2>
+                        <p>P2P sports betting</p>
+                        <p>Deployable contracts</p>
+                        <p><b>Current leagues:</b></p>
+                        <p><i>EPL, MLS, MLB, NBA, NFL, NHL, MMA</i><b><br></b></p><br>
+                        <h2>dPredictions</h2>
+                        <p>P2P predictions</p>
+                        <p>Deployable contracts</p>
+                        <p><b>Current markets:</b></p>
+                        <p><i>BTC-USDT, DERO-USDT, XMR-USDT, BTC-DERO, BTC-XMR, DERO-Difficulty, DERO-Block</i><br></p>
+                        <h2><br></h2>
+                        <h2>Iluma</h2>
+                        <p>On chain Tarot readings</p>
+                        <p>Querent's companion</p>
+                        <p>Created by Kalina Lux</p>
+                        <h1>Assets</h1>
+                        <h2>Marketplaces</h2>
+                        <p>Manage your Dero assets</p>
+                        <p>dReams app has a NFA marketplace for in game assets</p>
+                        <p>NFA Market app has a full unfiltered marketplace for all assets types</p>
+                        <p>Mint NFA's with NFA Market app<br></p>
+                        <h2>Collections</h2>
+                        <p><b>AZYPC</b> &amp; <b>AZYPCB</b> -<i> Playing cards</i></p>
+                        <p><b>SIXPC</b> &amp; <b>SIXPCB</b> - <i>Playing cards</i></p>
+                        <p><b>Dero Seals</b> - <i>Avatars</i></p>
+                        <p><b>Dero A-Team</b> - <i>Avatars</i></p>
+                        <p><b>AZYDS</b> - <i>Themes and avatars</i></p>
+                        <p><b>SIXART</b> - <i>Themes and avatars</i></p>
+                        <p><b>Death by Cupcake</b> - <i>Avatars</i></p>
+                        <p>High Strangeness - <i>Avatars/themes/playing cards</i><br><br></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685426424715-7 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685426424715-8 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style image-element silex-id-1685474331122-3 page-home paged-element paged-element-visible">
+            </div>
+            <div
+                class="editable-style html-element silex-id-1685244554988-7 hide-on-mobile dropDownGradient boxShadow page-home paged-element page-documents page-videos page-developers paged-element-visible">
+                <div class="silex-element-content">
+                    <div>
+                        <summary><a style="font-family:Varela Round; color:white; font-size:18pt; text-align:center"
+                                href="https://dreamdapps.io/download"><b>Download</b></a></summary>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="editable-style html-element silex-id-1685245888226-10 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; text-align:center; font-size:18pt;">
+                            <b>Resources</b>
+                        </summary>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/documents">Documents</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/developers">Developers</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/videos">Videos</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="editable-style html-element silex-id-1685235375406-3 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="color:white; font-size:18pt; text-align:center;"><b>Services</b></summary>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    DerBnB</h3>
+                                <div class="popuptext" id="derBnbPopup" style="font-family:Varela Round;color:white;">
+                                    <p>Property rental management app</p>
+                                    <p>Mint property tokens</p>
+                                    <p>DerBnb profit share and TRVL tokens</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    dSports</h3>
+                                <div class="popuptext" id="dSportsPopup" style="font-family:Varela Round;color:white;">
+                                    <p>P2P sports betting</p>
+                                    <p>Deployable contracts</p>
+                                    <p><b>Current leagues:</b> EPL, MLS, MLB, NBA, NFL, NHL, MMA</p>
+                                    <p>dReam Service</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    dPredictions</h3>
+                                <div class="popuptext" id="dPredictionPopup"
+                                    style="font-family:Varela Round;color:white;">
+                                    <p>P2P predictions</p>
+                                    <p>Deployable contracts</p>
+                                    <p><b>Current markets:</b> BTC-USDT, DERO-USDT, XMR-USDT, BTC-DERO, BTC-XMR,
+                                        DERO-Difficulty, DERO-Block
+                                        Time, DERO-Block Number</p>
+                                    <p>dReam Service</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">Iluma
+                                </h3>
+                                <div class="popuptext" id="ilumaPopup" style="font-family:Varela Round;color:white;">
+                                    <p>On chain Tarot readings</p>
+                                    <p>Querent's companion</p>
+                                    <p>Created by Kalina Lux</p>
+                                    <p><a style="font-size:13pt;" href="https://tarotiluma.com/">More info</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="editable-style html-element silex-id-1685227733552-0 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; font-size:18pt; text-align:center;">
+                            <b>Games</b>
+                        </summary>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    Baccarat</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white;">
+                                    <p>Classic table game where closest to 9 wins</p>
+                                    <p>In game NFA's</p>
+                                    <p>Multiple tokens supported</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; padding:2px; color:white; font-family:Varela Round;">
+                                    Holdero</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white">
+                                    <p>Texas Hold'em style poker</p>
+                                    <p>In game G45's &amp; NFA's</p>
+                                    <p>Multiple tokens supported</p>
+                                    <p>Deployable contracts</p>
+                                    <p>Tournament games</p>
+                                    <p>dReam Tools</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div
+                class="editable-style html-element silex-id-1685783344371-238 dropDownGradient boxShadow hide-on-mobile">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; text-align:center; font-size:18pt;">
+                            <b>Menu</b>
+                        </summary>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/">Home</a>
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/download">Download</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="https://dreamdapps.io/donate">Donate</a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <h3>
+                                    <a class="info-popup"
+                                        style="font-family:Varela Round; color:white; text-align:center; padding:2px; font-size:15pt;"
+                                        href="#community-bar">Community</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="editable-style html-element silex-id-1685235976498-5 hide-on-mobile dropDownGradient boxShadow">
+                <div class="silex-element-content">
+                    <details style="font-family:Varela Round; color:white;">
+                        <summary style="font-family:Varela Round; color:white; font-size:18pt; text-align:center;">
+                            <b>Assets</b>
+                        </summary>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; color:white; padding:2px; font-family:Varela Round;">
+                                    Marketplaces</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white;">
+                                    <p>Manage your Dero assets</p>
+                                    <p>dReams app has a NFA marketplace for in game assets</p>
+                                    <p>NFA Market app has a full unfiltered marketplace for all assets types</p>
+                                    <p>Mint NFA's with NFA Market app</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-popup">
+                                <h3 style="text-align:center; color:white; padding:2px; font-family:Varela Round;">
+                                    Collections</h3>
+                                <div class="popuptext" style="font-family:Varela Round;color:white;">
+                                    <p><b>AZYPC &amp; AZYPCB</b> - <i>Playing cards</i></p>
+                                    <p><b>SIXPC &amp; SIXPCB</b> - <i>Playing cards</i></p>
+                                    <p><b>Dero Seals</b> - <i>Avatars</i></p>
+                                    <p><b>Dero A-Team</b> - <i>Avatars</i></p>
+                                    <p><b>AZYDS</b> - <i>Themes and avatars</i></p>
+                                    <p><b>SIXART</b> - <i>Themes and avatars</i></p>
+                                    <p><b>Death by Cupcake</b> - <i>Avatars</i></p>
+                                    <p><b>High Strangeness</b> - <i>Avatars/themes/playing cards</i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <script>
+                        const popups = [...document.getElementsByClassName('info-popup')];
+
+                        window.addEventListener('click', ({ target }) => {
+                            const popup = target.closest('.info-popup');
+                            const clickedOnClosedPopup = popup && !popup.classList.contains('show');
+
+                            popups.forEach(p => p.classList.remove('show'));
+
+                            if (clickedOnClosedPopup) popup.classList.add('show');
+                        });
+
+                        var details = [...document.querySelectorAll('details')];
+                        document.addEventListener('click', function (e) {
+                            if (!details.some(f => f.contains(e.target))) {
+                                details.forEach(f => f.removeAttribute('open'));
+                            } else {
+                                details.forEach(f => !f.contains(e.target) ? f.removeAttribute('open') : '');
+                            }
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685501534841-138 page-home paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685501534841-139 page-home paged-element silex-element-content website-width prevent-draggable paged-element-visible">
+            <div
+                class="editable-style container-element silex-id-1685501534841-140 page-home paged-element mainShadow hide-on-mobile paged-element-visible">
+                <div class="editable-style image-element silex-id-1685475834323-7"><img src="assets/btnCam.png"></div>
+                <div
+                    class="editable-style text-element silex-id-1685501534841-142 page-home paged-element textShadow style-documents paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>
+                            We are all persons of interest for a company, a government, or other
+                            individuals. Our freedom to choose can be translated into both market
+                            and political risk for other prominent entities.</p>
+                        <h3>Anonymity stonewalls
+                            retrospective data analysis.</h3>
+                        <p>Trustless data
+                            privacy is quietly in demand, bu seemingly out of reach.<br>
+
+                        </p>
+
+
+
+
+
+                        <h2>We dReam to change that.</h2>
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685488019455-9 page-home paged-element hide-on-mobile paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685488019455-10 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685488032436-11 mainShadow page-home paged-element hide-on-mobile paged-element-visible">
+                <div
+                    class="editable-style text-element silex-id-1685489550789-21 page-home paged-element style-content titleShadow hide-on-mobile paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <h1>Timeline</h1>
+                    </div>
+                </div>
+                <div
+                    class="editable-style container-element silex-id-1685562058411-1 page-home paged-element hide-on-mobile paged-element-visible">
+                    <div
+                        class="editable-style image-element silex-id-1685488829336-17 page-home paged-element hide-on-mobile paged-element-visible">
+                        <img src="assets/stargate.png">
+                    </div>
+                    <div
+                        class="editable-style text-element silex-id-1685488861222-18 page-home paged-element textShadow style-documents hide-on-mobile paged-element-visible">
+                        <div class="silex-element-content normal">
+                            <p>Dero Stargate <a
+                                    href="https://medium.com/deroproject/stargate-a-private-decentralized-application-platform-d166baa7cc2"
+                                    title="Stargate Release">released to mainnet</a> February 26,<b>&nbsp;</b>2022.
+                                Stargate is built upon the first homomorphic encryption blockchain protocol. Developers
+                                and privacy advocates were quick putting it to use.</p>
+                        </div>
+                    </div>
+                    <div
+                        class="editable-style image-element silex-id-1685489202509-19 page-home paged-element hide-on-mobile paged-element-visible">
+                        <img src="assets/downArrow.png">
+                    </div>
+                </div>
+                <div
+                    class="editable-style container-element silex-id-1685562377300-2 hide-on-mobile page-home paged-element paged-element-visible">
+                    <div
+                        class="editable-style image-element silex-id-1685488032436-12 hide-on-mobile page-home paged-element paged-element-visible">
+                        <img src="assets/cardShark.png">
+                    </div>
+                    <div
+                        class="editable-style text-element silex-id-1685271173618-26 hide-on-mobile page-home paged-element textShadow style-documents paged-element-visible">
+                        <div class="silex-element-content normal">
+                            <p>Originating in games creation,&nbsp;the project got its roots as an integration of
+                                decentralized Dero games into a desktop app using the <a href="https://fyne.io/"
+                                    title="Fyne Main">Fyne Toolkit</a>.</p><span class="_wysihtml-temp-caret-fix"
+                                style="position: absolute; display: block; min-width: 1px; z-index: 99999;">﻿</span>
+                        </div>
+                    </div>
+                    <div
+                        class="editable-style image-element silex-id-1685490570056-22 hide-on-mobile page-home paged-element paged-element-visible">
+                        <img src="assets/downArrow.png">
+                    </div>
+                </div>
+                <div
+                    class="editable-style container-element silex-id-1685562938794-5 hide-on-mobile page-home paged-element paged-element-visible">
+                    <div
+                        class="editable-style image-element silex-id-1685493325385-32 page-home paged-element paged-element-visible">
+                        <img src="assets/expandBlue.png">
+                    </div>
+                    <div
+                        class="editable-style text-element silex-id-1685493409730-33 style-documents textShadow hide-on-mobile page-home paged-element paged-element-visible">
+                        <div class="silex-element-content normal">
+                            <p>Moving into the future, the project is working towards further dApp and&nbsp; asset
+                                collection integrations. As well as the continued expansion of the package imports to
+                                aid in facilitating further growth of the dReams and Dero ecosystems. Stay tuned for
+                                updates!</p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="editable-style container-element silex-id-1685562560049-3 hide-on-mobile page-home paged-element paged-element-visible">
+                    <div
+                        class="editable-style image-element silex-id-1685491180491-26 hide-on-mobile page-home paged-element paged-element-visible">
+                        <img src="assets/downArrow.png">
+                    </div>
+                    <div
+                        class="editable-style image-element silex-id-1685490599816-24 hide-on-mobile page-home paged-element paged-element-visible">
+                        <img src="assets/dArchEvent1.png">
+                    </div>
+                    <div
+                        class="editable-style text-element silex-id-1685489508569-20 hide-on-mobile page-home paged-element style-documents textShadow paged-element-visible">
+                        <div class="silex-element-content normal">
+                            <p>dReams was submitted in <a
+                                    href="https://medium.com/deroproject/dero-darch-event-1-d95473f096c8"
+                                    title="dArch Event1">dArch Event 1</a> where it gained traction with other devs and
+                                began to integrate new Dero services and create new dApps, building off the projects
+                                framework.&nbsp;</p><span class="_wysihtml-temp-caret-fix"
+                                style="position: absolute; display: block; min-width: 1px; z-index: 99999;">﻿</span>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="editable-style container-element silex-id-1685562787852-4 page-home paged-element hide-on-mobile paged-element-visible">
+                    <div
+                        class="editable-style text-element silex-id-1685492015427-28 style-documents textShadow hide-on-mobile page-home paged-element paged-element-visible">
+                        <div class="silex-element-content normal">
+                            <p>After months of development, dReams and fellow developers took the grand prize for their
+                                collaborations. dReams version 0.9.5 was released, which included six dApp integrations
+                                and import packages for developers to build with.</p><span
+                                class="_wysihtml-temp-caret-fix"
+                                style="position: absolute; display: block; min-width: 1px; z-index: 99999;">﻿</span>
+                        </div>
+                    </div>
+                    <div
+                        class="editable-style image-element silex-id-1685491130254-25 page-home paged-element paged-element-visible">
+                        <img src="assets/dArchPrize.png">
+                    </div>
+                    <div
+                        class="editable-style image-element silex-id-1685492165595-30 hide-on-mobile page-home paged-element paged-element-visible">
+                        <img src="assets/downArrow.png">
+                    </div>
+                </div>
+                <div class="editable-style container-element silex-id-1685584077369-0 hide-on-mobile">
+                    <div class="editable-style image-element silex-id-1685584077369-1 hide-on-mobile"><img
+                            src="assets/marketIcon.png"></div>
+                    <div
+                        class="editable-style text-element silex-id-1685584077369-2 textShadow style-documents hide-on-mobile">
+                        <div class="silex-element-content normal">
+                            <p>Leveraging <a href="https://github.com/civilware/artificer-nfa-standard"
+                                    title="ART-NFA-MS1">ART-NFA-MS1</a>, dReams becomes the first Dero app to integrate
+                                a NFA marketplace for its in game assets.</p>
+                        </div>
+                    </div>
+                    <div class="editable-style image-element silex-id-1685584077369-3 hide-on-mobile"><img
+                            src="assets/downArrow.png"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1478366450713-3 hide-on-mobile">
+        <div class="editable-style container-element silex-id-1478366450713-2 website-width" title=""
+            id="community-bar">
+            <div class="editable-style container-element silex-id-1685324420480-21 hide-on-mobile socialLink boxShadow">
+            </div>
+            <div class="editable-style container-element silex-id-1685324229388-20 hide-on-mobile socialLink boxShadow">
+            </div><a
+                class="editable-style container-element silex-id-1685764387621-0 socialLink boxShadow hide-on-mobile"
+                href="https://dero.io">
+                <div class="editable-style image-element silex-id-1685428042036-12"><img src="assets/deroLinkDark.png">
+                </div>
+            </a><a class="editable-style container-element silex-id-1685764517764-4 socialLink boxShadow hide-on-mobile"
+                href="https://discord.gg/6BDqrzjtqJ">
+                <div class="editable-style image-element silex-id-1685427998314-11 hide-on-mobile"><img
+                        src="assets/discordLinkDark.png"></div>
+            </a><a class="editable-style container-element silex-id-1685764642147-8 socialLink boxShadow hide-on-mobile"
+                href="https://t.me/dReamdApps">
+                <div class="editable-style image-element silex-id-1685427956991-10 hide-on-mobile"><img
+                        src="assets/telegramLinkDark.png"></div>
+            </a>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685423571466-4 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685423571467-5 silex-element-content website-width prevent-draggable">
+            <div class="editable-style image-element silex-id-1685423589591-6 hide-on-mobile"><img
+                    src="assets/dReamerUp.png"></div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685423117504-2 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685423117505-3 silex-element-content website-width prevent-draggable">
+            <div class="editable-style html-element silex-id-1685651967861-0 hide-on-mobile mainShadow">
+                <div class="silex-element-content">
+                    <div>
+                        <canvas id="matrixCanv3">Canvas is not supported in your browser.</canvas>
+                        <canvas id="matrixCanv4">Canvas is not supported in your browser.</canvas>
+                    </div>
+
+                    <script>
+                        var canvas3 = document.getElementById('matrixCanv3'),
+                            ctx3 = canvas3.getContext('2d'),
+                            canvas4 = document.getElementById('matrixCanv4'),
+                            ctx4 = canvas4.getContext('2d'),
+                            mc2_w = 1180,
+                            mc2_h = 313,
+                            mc2_arr = ['d', 'r', 'e', 'a', 'm', 's', 'o', 'p', 'i', 'v', 'a', 'c', 'y', 't', 'h', '6'],
+                            mc2_maxChar = 120,
+                            mc2_falling = [],
+                            mc2_font = 15,
+                            mc2_maxColums = mc2_w / (mc2_font);
+                        canvas3.width = canvas4.width = mc2_w;
+                        canvas3.height = canvas4.height = mc2_h;
+
+
+                        Point.prototype.draw_mc2 = function (ctx3) {
+
+                            this.value = mc2_arr[randomInt(0, mc2_arr.length - 1)].toUpperCase();
+                            this.speed = randomFloat(1, 6);
+
+
+                            ctx4.fillStyle = "#562b7c";
+                            ctx4.font = mc2_font + "px Macondo";
+                            ctx4.fillText(this.value, this.x, this.y);
+                            ctx3.fillStyle = "#49bdfc";
+                            ctx3.font = mc2_font + "px Macondo";
+                            ctx3.fillText(this.value, this.x, this.y);
+
+
+
+                            this.y += this.speed;
+                            if (this.y > mc2_h) {
+                                this.y = randomFloat(-100, 0);
+                                this.speed = randomFloat(2, 5);
+                            }
+                        }
+
+                        for (var i = 0; i < mc2_maxColums; i++) {
+                            mc2_falling.push(new Point(i * mc2_font, randomFloat(-500, 0)));
+                        }
+
+
+                        var updateBottomMatrix = function () {
+                            // background color
+                            ctx3.fillStyle = "rgba(0,0,0,0.06)";
+                            ctx3.fillRect(0, 0, mc2_w, mc2_h);
+
+                            ctx4.clearRect(0, 0, mc2_w, mc2_h);
+
+                            var i = mc2_falling.length;
+
+                            while (i--) {
+                                mc2_falling[i].draw_mc2(ctx3);
+                                var v = mc2_falling[i];
+                            }
+
+                            requestAnimationFrame(updateBottomMatrix);
+                        }
+
+                        updateBottomMatrix();
+                    </script>
+                </div>
+            </div>
+            <div class="editable-style image-element silex-id-1685266370674-21 hide-on-mobile"><img
+                    src="assets/DeroBanner.gif"></div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685440753936-22 hide-on-mobile">
+        <div
+            class="editable-style container-element silex-id-1685440753937-23 silex-element-content website-width prevent-draggable">
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685694595738-1 hide-on-desktop page-home paged-element page-download page-developers paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685694595738-2 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685694885376-7 hide-on-desktop page-home paged-element page-download page-developers paged-element-visible">
+                <div class="editable-style image-element silex-id-1685694962233-8 hide-on-desktop"><img
+                        src="assets/privacyTogeatherUp.png"></div>
+            </div><a
+                class="editable-style container-element silex-id-1685694611431-3 hide-on-desktop page-home paged-element page-download page-developers paged-element-visible"
+                href="https://dreamdapps/donate">
+                <div
+                    class="editable-style image-element silex-id-1685694676064-4 hide-on-desktop page-home paged-element page-download page-developers paged-element-visible">
+                    <img src="assets/donateHeart.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685694791564-6 hide-on-desktop style-mobilecontent textShadow page-home paged-element page-download page-developers paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Help support the project</p><span class="_wysihtml-temp-caret-fix"
+                            style="position: absolute; display: block; min-width: 1px; z-index: 99999;">﻿</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685695371980-9 page-home paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685695371981-10 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style text-element silex-id-1685695985860-18 hide-on-desktop page-home paged-element style-mobilecontent textShadow mainShadow paged-element-visible">
+                <div class="silex-element-content normal">
+                    <h1>Timeline</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685695662351-12 page-home paged-element hide-on-desktop paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685695662351-13 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685695678966-14 hide-on-desktop page-home paged-element boxShadow textShadow paged-element-visible">
+                <div class="editable-style image-element silex-id-1685695910421-16"><img src="assets/stargate.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685695708105-15 hide-on-desktop page-home paged-element style-mobilecontent paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Dero Stargate <a
+                                href="https://medium.com/deroproject/stargate-a-private-decentralized-application-platform-d166baa7cc2"
+                                title="Stargate Release">released to mainnet</a> February 26,<b>&nbsp;</b>2022. Stargate
+                            is built upon the first homomorphic encryption blockchain protocol. Developers and privacy
+                            advocates were quick putting it to use.</p>
+                    </div>
+                </div>
+                <div class="editable-style image-element silex-id-1685695954506-17"><img src="assets/downArrow.png">
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685696104821-19 hide-on-desktop page-home paged-element boxShadow textShadow paged-element-visible">
+                <div class="editable-style image-element silex-id-1685696118896-20"><img src="assets/cardShark.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685696146596-21 hide-on-desktop page-home paged-element style-mobilecontent paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Originating in games creation, the project got its roots as an integration of decentralized
+                            Dero games into a desktop app using the <a href="https://fyne.io/" title="Fyne Main">Fyne
+                                Toolkit</a>.</p>
+                    </div>
+                </div>
+                <div class="editable-style image-element silex-id-1685696342133-22"><img src="assets/downArrow.png">
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685696419867-40 hide-on-desktop page-home paged-element boxShadow textShadow paged-element-visible">
+                <div class="editable-style image-element silex-id-1685696597230-43"><img src="assets/marketIcon.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685696600923-44 hide-on-desktop page-home paged-element style-mobilecontent paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Leveraging <a href="https://github.com/civilware/artificer-nfa-standard"
+                                title="ART-NFA-MS1">ART-NFA-MS1</a>, dReams becomes the first Dero app to integrate a
+                            NFA marketplace for its in game assets.</p>
+                    </div>
+                </div>
+                <div class="editable-style image-element silex-id-1685696640589-45"><img src="assets/downArrow.png">
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685696735269-46 hide-on-desktop page-home paged-element boxShadow textShadow paged-element-visible">
+                <div class="editable-style image-element silex-id-1685696893761-48"><img src="assets/dArchEvent1.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685696927641-49 hide-on-desktop page-home paged-element style-mobilecontent paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>dReams was submitted in <a
+                                href="https://medium.com/deroproject/dero-darch-event-1-d95473f096c8"
+                                title="dArch Event1">dArch Event 1</a> where it gained traction with other devs and
+                            began to integrate new Dero services and create new dApps, building off the projects
+                            framework. </p>
+                    </div>
+                </div>
+                <div class="editable-style image-element silex-id-1685696959281-50"><img src="assets/downArrow.png">
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685696806991-47 hide-on-desktop page-home paged-element boxShadow textShadow paged-element-visible">
+                <div class="editable-style image-element silex-id-1685697129792-52"><img src="assets/dArchPrize.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685697234036-53 hide-on-desktop page-home paged-element style-mobilecontent paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>After months of development, dReams and fellow developers took the grand prize for their
+                            collaborations. dReams version 0.9.5 was released, which included six dApp integrations and
+                            import packages for developers to build with.</p>
+                    </div>
+                </div>
+                <div class="editable-style image-element silex-id-1685697259201-54"><img src="assets/downArrow.png">
+                </div>
+            </div>
+            <div
+                class="editable-style container-element silex-id-1685697068320-51 hide-on-desktop page-home paged-element boxShadow textShadow paged-element-visible">
+                <div class="editable-style image-element silex-id-1685697332981-55"><img src="assets/expandBlue.png">
+                </div>
+                <div
+                    class="editable-style text-element silex-id-1685697340755-56 hide-on-desktop style-mobilecontent page-home paged-element paged-element-visible">
+                    <div class="silex-element-content normal">
+                        <p>Moving into the future, the project is working towards further dApp and asset collection
+                            integrations. As well as the continued expansion of the package imports to aid in
+                            facilitating further growth of the dReams and Dero ecosystems. Stay tuned for updates!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685697662660-62 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685697662661-63 silex-element-content website-width prevent-draggable">
+            <div class="editable-style image-element silex-id-1685697674267-64 hide-on-desktop"><img
+                    src="assets/dReamerUp.png"></div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685697475777-59 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685697475777-60 silex-element-content website-width prevent-draggable">
+            <div class="editable-style image-element silex-id-1685697535828-61 hide-on-desktop mainShadow"><img
+                    src="assets/DeroBanner.gif"></div>
+        </div>
+    </section>
+    <section class="editable-style section-element silex-id-1685782785078-236 hide-on-desktop">
+        <div
+            class="editable-style container-element silex-id-1685782785079-237 silex-element-content website-width prevent-draggable">
+        </div>
+    </section>
+</body>
+
+</html>
