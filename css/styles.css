@@ -2024,12 +2024,14 @@ summary:hover {
 }
 
 .silex-id-1685694611431-3 {
-  width: 100px;
-  min-height: 100px;
-  background-color: rgb(255, 255, 255);
+  min-height: 115px;
+  top: -142px;
+  left: 145px;
+  width: 111px;
+  background-color: transparent;
   position: absolute;
-  top: 2905px;
-  left: 186px;
+  display: block;
+  border-radius: 12px 12px 12px 12px;
 }
 
 .silex-id-1685694676064-4 {
@@ -4537,17 +4539,6 @@ summary:hover {
     margin-bottom: 30px;
   }
 
-  .silex-id-1685694611431-3 {
-    min-height: 115px;
-    top: -142px;
-    left: 145px;
-    width: 111px;
-    background-color: transparent;
-    position: absolute;
-    display: block;
-    border-radius: 12px 12px 12px 12px;
-  }
-
   .silex-id-1685694676064-4 {
     height: 100px;
     top: 0px;
@@ -5503,7 +5494,7 @@ summary:hover {
   }
 
   .silex-id-1685775162543-198 {
-    min-height: 1450px;
+    min-height: 1700px;
     background-color: transparent;
   }
 
