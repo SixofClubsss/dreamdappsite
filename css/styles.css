@@ -370,11 +370,11 @@ summary:hover {
 }
 
 .silex-id-1685237513805-7 {
-  width: 220px;
+  width: 240px;
   min-height: 160px;
   background-color: transparent;
   position: absolute;
-  top: 88px;
+  top: 90px;
   left: 8px;
 }
 
@@ -961,7 +961,7 @@ summary:hover {
 
 .silex-id-1685485564550-3 {
   width: 1000px;
-  min-height: 792px;
+  min-height: 779px;
   background-color: rgba(35, 36, 31, 1);
   position: absolute;
   top: 144px;
@@ -981,7 +981,7 @@ summary:hover {
 }
 
 .silex-id-1685410323246-3 {
-  min-height: 1136px;
+  min-height: 1180px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -992,7 +992,7 @@ summary:hover {
 
 .silex-id-1685487091051-8 {
   width: 1166px;
-  min-height: 1036px;
+  min-height: 1080px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5px;
@@ -1204,7 +1204,7 @@ summary:hover {
 }
 
 .silex-id-1685498254972-106 {
-  min-height: 1561px;
+  min-height: 1591px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -1213,7 +1213,7 @@ summary:hover {
 
 .silex-id-1685498254972-107 {
   width: 1166px;
-  min-height: 1461px;
+  min-height: 1491px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5px;
@@ -1234,7 +1234,7 @@ summary:hover {
 
 .silex-id-1685498254972-109 {
   width: 1000px;
-  min-height: 1077px;
+  min-height: 1000px;
   background-color: rgba(35, 36, 31, 1);
   position: absolute;
   top: 184px;
@@ -1250,7 +1250,7 @@ summary:hover {
 }
 
 .silex-id-1685498314564-116 {
-  min-height: 1301px;
+  min-height: 1571px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -1259,7 +1259,7 @@ summary:hover {
 
 .silex-id-1685498314564-117 {
   width: 1166px;
-  min-height: 1201px;
+  min-height: 1471px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5px;
@@ -1280,7 +1280,7 @@ summary:hover {
 
 .silex-id-1685498314564-119 {
   width: 1000px;
-  min-height: 887px;
+  min-height: 1102;
   background-color: rgba(35, 36, 31, 1);
   position: absolute;
   top: 164px;
@@ -1296,7 +1296,7 @@ summary:hover {
 }
 
 .silex-id-1685498374186-126 {
-  min-height: 1825px;
+  min-height: 1875px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -1305,7 +1305,7 @@ summary:hover {
 
 .silex-id-1685498374186-127 {
   width: 1168px;
-  min-height: 1725px;
+  min-height: 1775px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5px;
@@ -1326,10 +1326,10 @@ summary:hover {
 
 .silex-id-1685498374187-129 {
   width: 1000px;
-  min-height: 1362px;
+  min-height: 1387;
   background-color: rgba(35, 36, 31, 1);
   position: absolute;
-  top: 164px;
+  top: 140px;
   left: 83px;
   border-width: 3px 3px 3px 3px;
   border-style: inset;
@@ -1555,11 +1555,11 @@ summary:hover {
 }
 
 .silex-id-1685523923449-52 {
-  width: 739px;
+  width: 750px;
   min-height: 59.4375px;
   position: absolute;
   top: 151px;
-  left: 413px;
+  left: 400px;
 }
 
 .silex-id-1685524098176-53 {
@@ -1645,11 +1645,11 @@ summary:hover {
 }
 
 .silex-id-1685561573015-0 {
-  width: 467px;
+  width: 497px;
   min-height: 81px;
   position: absolute;
   top: 60px;
-  left: 89px;
+  left: 60px;
 }
 
 .silex-id-1685562058411-1 {
@@ -6131,27 +6131,35 @@ a {
 }
 
 #parent_1685824301214_5 .slide-0 .slide-image {
-  background-image: url(../assets/slide1.png);
+  background-image: url(../assets/slide6.png);
 }
 
 #parent_1685824301214_5 .slide-1 .slide-image {
-  background-image: url(../assets/slide2.png);
+  background-image: url(../assets/slide1.png);
 }
 
 #parent_1685824301214_5 .slide-2 .slide-image {
-  background-image: url(../assets/slide3.png);
+  background-image: url(../assets/slide2.png);
 }
 
 #parent_1685824301214_5 .slide-3 .slide-image {
-  background-image: url(../assets/slide4.png);
+  background-image: url(../assets/slide3.png);
 }
 
 #parent_1685824301214_5 .slide-4 .slide-image {
-  background-image: url(../assets/slide5.png);
+  background-image: url(../assets/slide4.png);
 }
 
 #parent_1685824301214_5 .slide-5 .slide-image {
+  background-image: url(../assets/slide5.png);
+}
+
+#parent_1685824301214_5 .slide-6 .slide-image {
   background-image: url(../assets/slide7.png);
+}
+
+#parent_1685824301214_5 .slide-7 .slide-image {
+  background-image: url(../assets/slide8.png);
 }
 
 #parent_1685824301214_5 .unslider {
