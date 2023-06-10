@@ -30,7 +30,6 @@ a:link {
   color: #309deb;
 }
 
-
 a:active {
   background-color: rgba(255, 255, 255, 0.333);
   border-radius: 9px;
@@ -201,6 +200,42 @@ summary:hover {
   bottom: 100%;
   left: 50%;
   margin-left: -63px;
+}
+
+#topButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 999;
+  border: 2px outset;
+  border-color: white;
+  box-shadow: 1px 1px 1px #2b85c5ea;
+  background-image: linear-gradient(135deg, #d8d8d8, #272c3fd8, #323952b6, #000000b6, #2d193f83, #000000);
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+#topButton:hover {
+  background-image: linear-gradient(to bottom right, #ff3cac, #562b7c, #2b85c5);
+}
+
+#topButton:active {
+  background-image: linear-gradient(to bottom right, #a34078, #2d193f, #205a83);
+}
+
+.arrow {
+  margin-top: 6px;
+  border: solid rgb(255, 255, 255);
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 6px;
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
 }
 
 .body-initial {

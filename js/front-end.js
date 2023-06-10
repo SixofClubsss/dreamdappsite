@@ -169,6 +169,18 @@ $(function () {
     window.silex.scrollLeft = offsetLeft;
     window.silex.scale = ratio;
 
+    let toTop = document.getElementById("topButton");
+
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 450 || document.documentElement.scrollTop > 450) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
+    }
+
     // update the body scale
     $('.fixed').css({
       'transform': 'translate(' + offsetLeft + 'px, ' + offsetTop + 'px)',
@@ -198,4 +210,9 @@ $(function () {
     return isBellowBreakPoint() ? 480 : window.silex.data.site.width;
   }
 });
+
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
 
