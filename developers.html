@@ -604,7 +604,7 @@
                     class="editable-style html-element silex-id-1685525405395-59 hide-on-mobile page-developers paged-element paged-element-visible">
                     <div class="silex-element-content">
                         <pre><code>
-git clone https://github.com/SixofClubsss/dReams.git
+git clone https://github.com/dReam-dApps/dReams.git
 cd dReams
 cd cmd/dReams
 go build .
@@ -643,7 +643,7 @@ go build .
                         <pre><code>
 package main
 
-import "github.com/SixofClubsss/dReams/rpc"
+import "github.com/dReam-dApps/dReams/rpc"
 </code>
 </pre>
                     </div>
@@ -672,9 +672,9 @@ import "github.com/SixofClubsss/dReams/rpc"
                             <li><a href="#dwidget-example">dwidget</a></li>
                             <li><a href="#bundle-example">bundle</a></li>
                         </ol>
-                        <a href="https://github.com/SixofClubsss/dReams"><img style="socialLink"
+                        <a href="https://github.com/dReam-dApps/dReams"><img style="socialLink"
                                 src="https://badgen.net/badge/icon/github?icon=github&amp;label"></a>
-                        <a href="https://pkg.go.dev/github.com/SixofClubsss/dReams"><img style="socialLink"
+                        <a href="https://pkg.go.dev/github.com/dReam-dApps/dReams"><img style="socialLink"
                                 src="https://img.shields.io/badge/godoc-reference-blue.svg"></a>
                     </div>
                 </div>
@@ -708,39 +708,55 @@ import "github.com/SixofClubsss/dReams/rpc"
 package main
 
 import (
-	"log"
-	"time"
+    "log"
+    "os"
+    "os/signal"
+    "syscall"
+    "time"
 
-	"github.com/SixofClubsss/dReams/rpc"
+    "github.com/dReam-dApps/dReams/rpc"
 )
 
 // dReams rpc connection example
 
+// Name my app
+const app_tag = "My_app"
+
 func main() {
-	// Name my app
-	app_tag := "My_app"
+    // Initialize rpc addresses to rpc.Daemon and rpc.Wallet vars
+    rpc.Daemon.Rpc = "127.0.0.1:10102"
+    rpc.Wallet.Rpc = "127.0.0.1:10103"
+    // Initialize rpc.Wallet.UserPass for rpc user:pass
 
-	// Initialize rpc addresses to rpc.Daemon and rpc.Wallet vars
-	rpc.Daemon.Rpc = "127.0.0.1:10102"
-	rpc.Wallet.Rpc = "127.0.0.1:10103"
-	// Initialize rpc.Wallet.UserPass for rpc user:pass
+    // Check for daemon connection
+    rpc.Ping()
 
-	// Check for daemon connection
-	rpc.Ping()
+    // Check for wallet connection and get address
+    rpc.GetAddress(app_tag)
 
-	// Check for wallet connection and get address
-	rpc.GetAddress(app_tag)
+    // Exit with ctrl-C
+    var exit bool
+    c := make(chan os.Signal, 1)
+    signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+    go func() {
+        <-c
+        log.Printf("[%s] Closing\n", app_tag)
+        exit = true
+    }()
 
-	// Loop will check daemon and wallet connection and
-	// keep running while daemon and wallet are connected
-	for rpc.Daemon.Connect &amp;&amp; rpc.Wallet.Connect {
-		rpc.Ping()
-		rpc.EchoWallet(app_tag)
-		log.Printf("[%s] Running\n", app_tag)
-		time.Sleep(time.Second)
-	}
+    // Loop will check for daemon and wallet connection and
+    // print wallet height and balance. It will keep
+    // running while daemon and wallet are connected or until exit
+    for !exit && rpc.IsReady() {
+        rpc.Wallet.GetBalance()
+        rpc.GetWalletHeight(app_tag)
+        log.Printf("[%s] Height: %d   Dero Balance: %s\n", app_tag, rpc.Wallet.Height, rpc.FromAtomic(rpc.Wallet.Balance, 5))
+        time.Sleep(3 * time.Second)
+        rpc.Ping()
+        rpc.EchoWallet(app_tag)
+    }
 
-	log.Printf("[%s] Not connected\n", app_tag)
+    log.Printf("[%s] Not connected\n", app_tag)
 }
 </code>
 </pre>
@@ -779,56 +795,57 @@ func main() {
 package main
 
 import (
-	"log"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+    "log"
+    "os"
+    "os/signal"
+    "syscall"
+    "time"
 
-	"github.com/SixofClubsss/dReams/menu"
-	"github.com/SixofClubsss/dReams/rpc"
+    "github.com/dReam-dApps/dReams/menu"
+    "github.com/dReam-dApps/dReams/rpc"
 )
 
 // dReams menu StartGnomon() example
 
+// Name my app
+const app_tag = "My_app"
+
 func main() {
-	// Name my app
-	app_tag := "My_app"
+    // Initialize Gnomon fast sync
+    menu.Gnomes.Fast = true
 
-	// Initialize Gnomon fast sync
-	menu.Gnomes.Fast = true
+    // Initialize rpc address to rpc.Daemon var
+    rpc.Daemon.Rpc = "127.0.0.1:10102"
 
-	// Initialize rpc address to rpc.Daemon var
-	rpc.Daemon.Rpc = "127.0.0.1:10102"
+    rpc.Ping()
+    // Check for daemon connection, if daemon is not connected we won't start Gnomon
+    if rpc.Daemon.Connect {
+        // Initialize NFA search filter and start Gnomon
+        filter := []string{menu.NFA_SEARCH_FILTER}
+        menu.StartGnomon(app_tag, "boltdb", filter, 0, 0, nil)
 
-	rpc.Ping()
-	// Check for daemon connection, if daemon is not connected we won't start Gnomon
-	if rpc.Daemon.Connect {
-		// Initialize NFA search filter and start Gnomon
-		filter := []string{menu.NFA_SEARCH_FILTER}
-		menu.StartGnomon(app_tag, "gravdb", filter, 0, 0, nil)
+        // Exit with ctrl-C
+        var exit bool
+        c := make(chan os.Signal, 1)
+        signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+        go func() {
+            <-c
+            exit = true
+        }()
 
-		var exit bool
-		c := make(chan os.Signal, 1)
-		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-		go func() {
-			<-c
-			exit = true
-		}()
+        // Gnomon will continue to run if daemon is connected
+        for !exit &amp;&amp; rpc.Daemon.Connect {
+            contracts := menu.Gnomes.GetAllOwnersAndSCIDs()
+            log.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
+            time.Sleep(3 * time.Second)
+            rpc.Ping()
+        }
 
-		// Gnomon will continue to run if daemon is connected
-		for !exit && rpc.Daemon.Connect {
-			contracts := menu.Gnomes.GetAllOwnersAndSCIDs()
-			log.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
-			time.Sleep(time.Second)
-			rpc.Ping()
-		}
+        // Stop Gnomon
+        menu.Gnomes.Stop(app_tag)
+    }
 
-		// Stop Gnomon
-		menu.Gnomes.Stop(app_tag)
-	}
-
-	log.Printf("[%s] Done\n", app_tag)
+    log.Printf("[%s] Done\n", app_tag)
 }
 </code>
 </pre>
@@ -866,55 +883,55 @@ func main() {
 package main
 
 import (
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
-	"github.com/SixofClubsss/dReams/dwidget"
-	"github.com/SixofClubsss/dReams/menu"
-	"github.com/SixofClubsss/dReams/rpc"
+	"github.com/dReam-dApps/dReams/rpc"
 )
 
-// dReams dwidget VerticalEntries() example
+// dReams rpc connection example
+
+// Name my app
+const app_tag = "My_app"
 
 func main() {
-	// Name my app
-	app_tag := "My_app"
+	// Initialize rpc addresses to rpc.Daemon and rpc.Wallet vars
+	rpc.Daemon.Rpc = "127.0.0.1:10102"
+	rpc.Wallet.Rpc = "127.0.0.1:10103"
+	// Initialize rpc.Wallet.UserPass for rpc user:pass
 
-	// Initialize Gnomon fast sync
-	menu.Gnomes.Fast = true
+	// Check for daemon connection
+	rpc.Ping()
 
-	// Initialize fyne app
-	a := app.New()
+	// Check for wallet connection and get address
+	rpc.GetAddress(app_tag)
 
-	// Initialize fyne window with size
-	w := a.NewWindow(app_tag)
-	w.Resize(fyne.NewSize(300, 100))
-	w.SetMaster()
+	// Exit with ctrl-C
+	var exit bool
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		log.Printf("[%s] Closing\n", app_tag)
+		exit = true
+	}()
 
-	// When window closes, stop Gnomon if running
-	w.SetCloseIntercept(func() {
-		if menu.Gnomes.Init {
-			menu.StopGnomon(app_tag)
-		}
-		w.Close()
-	})
-
-	// Initialize dwidget connection box
-	connect_box := dwidget.VerticalEntries(app_tag, 1)
-
-	// When connection button is pressed we will connect to wallet rpc,
-	// and start Gnomon with NFA search filter if it is not running
-	connect_box.Button.OnTapped = func() {
-		rpc.GetAddress(app_tag)
+	// Loop will check for daemon and wallet connection and
+	// print wallet height and balance. It will keep
+	// running while daemon and wallet are connected or until exit
+	for !exit && rpc.IsReady() {
+		rpc.Wallet.GetBalance()
+		rpc.GetWalletHeight(app_tag)
+		log.Printf("[%s] Height: %d   Dero Balance: %s\n", app_tag, rpc.Wallet.Height, rpc.FromAtomic(rpc.Wallet.Balance, 5))
+		time.Sleep(3 * time.Second)
 		rpc.Ping()
-		if rpc.Daemon.Connect &amp;&amp; !menu.Gnomes.Init &amp;&amp; !menu.Gnomes.Start {
-			go menu.StartGnomon(app_tag, []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
-		}
+		rpc.EchoWallet(app_tag)
 	}
 
-	// Place connection box and start app
-	w.SetContent(connect_box.Container)
-	w.ShowAndRun()
+	log.Printf("[%s] Not connected\n", app_tag)
 }
 </code>
                         </pre>
@@ -947,68 +964,68 @@ func main() {
 package main
 
 import (
-	"image/color"
+    "image/color"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
-	"github.com/SixofClubsss/dReams/bundle"
+    "fyne.io/fyne/v2"
+    "fyne.io/fyne/v2/app"
+    "fyne.io/fyne/v2/canvas"
+    "fyne.io/fyne/v2/container"
+    "fyne.io/fyne/v2/widget"
+    "github.com/dReam-dApps/dReams/bundle"
 )
 
+// Name my app
+const app_tag = "My_app"
+
 func main() {
-	// Name my app
-	app_tag := "My_app"
+    // Initialize app color to bundle var
+    bundle.AppColor = color.Black
 
-	// Initialize app color to bundle var
-	bundle.AppColor = color.Black
+    // Initialize fyne app with Dero theme
+    a := app.New()
+    a.Settings().SetTheme(bundle.DeroTheme(bundle.AppColor))
 
-	// Initialize fyne app with Dero theme
-	a := app.New()
-	a.Settings().SetTheme(bundle.DeroTheme(bundle.AppColor))
+    // Initialize fyne window with size and icon from bundle package
+    w := a.NewWindow(app_tag)
+    w.SetIcon(bundle.ResourceBlueBadge3Png)
+    w.Resize(fyne.NewSize(300, 100))
+    w.SetMaster()
 
-	// Initialize fyne window with size and icon from bundle package
-	w := a.NewWindow(app_tag)
-	w.SetIcon(bundle.ResourceBlueBadge3Png)
-	w.Resize(fyne.NewSize(300, 100))
-	w.SetMaster()
+    // Initialize fyne container and add some various widgets for viewing purposes
+    cont := container.NewVBox()
+    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewEntry(), widget.NewButton("Button", nil)))
+    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewCheck("Check", nil), widget.NewButton("Button", nil)))
+    cont.Add(widget.NewPasswordEntry())
+    cont.Add(widget.NewSlider(0, 100))
 
-	// Initialize fyne container and add some various widgets for viewing purposes
-	cont := container.NewVBox()
-	cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewEntry(), widget.NewButton("Button", nil)))
-	cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewCheck("Check", nil), widget.NewButton("Button", nil)))
-	cont.Add(widget.NewPasswordEntry())
-	cont.Add(widget.NewSlider(0, 100))
+    // Widget to change theme
+    change_theme := widget.NewRadioGroup([]string{"Dark", "Light"}, func(s string) {
+        switch s {
+        case "Dark":
+            bundle.AppColor = color.Black
+        case "Light":
+            bundle.AppColor = color.White
+        default:
 
-	// Widget to change theme
-	change_theme := widget.NewRadioGroup([]string{"Dark", "Light"}, func(s string) {
-		switch s {
-		case "Dark":
-			bundle.AppColor = color.Black
-		case "Light":
-			bundle.AppColor = color.White
-		default:
+        }
 
-		}
+        a.Settings().SetTheme(bundle.DeroTheme(bundle.AppColor))
+    })
+    change_theme.Horizontal = true
+    cont.Add(container.NewCenter(change_theme))
 
-		a.Settings().SetTheme(bundle.DeroTheme(bundle.AppColor))
-	})
-	change_theme.Horizontal = true
-	cont.Add(container.NewCenter(change_theme))
+    // Add a image from bundle package
+    gnomon_img := canvas.NewImageFromResource(bundle.ResourceGnomonIconPng)
+    gnomon_img.SetMinSize(fyne.NewSize(45, 45))
+    cont.Add(container.NewCenter(gnomon_img))
 
-	// Add a image from bundle package
-	gnomon_img := canvas.NewImageFromResource(bundle.ResourceGnomoniconPng)
-	gnomon_img.SetMinSize(fyne.NewSize(45, 45))
-	cont.Add(container.NewCenter(gnomon_img))
+    // Adding last widget
+    select_entry := widget.NewSelect([]string{"Choice 1", "Choice 2", "Choice 3"}, nil)
+    cont.Add(select_entry)
 
-	// Adding last widget
-	select_entry := widget.NewSelect([]string{"Choice 1", "Choice 2", "Choice 3"}, nil)
-	cont.Add(select_entry)
-
-	// Place widget container and start app
-	w.SetContent(cont)
-	w.ShowAndRun()
+    // Place widget container and start app
+    w.SetContent(cont)
+    w.ShowAndRun()
 }
 </code>
                         </pre>
@@ -1230,7 +1247,7 @@ func main() {
                     class="editable-style html-element silex-id-1685772006772-137 page-developers paged-element paged-element-visible">
                     <div class="silex-element-content">
                         <pre><code>
-git clone https://github.com/SixofClubsss/dReams.git
+git clone https://github.com/dReam-dApps/dReams.git
 cd dReams
 cd cmd/dReams
 go build .
@@ -1270,7 +1287,7 @@ go build .
                         <pre><code>
 package main
 
-import "github.com/SixofClubsss/dReams/rpc"
+import "github.com/dReam-dApps/dReams/rpc"
 </code>
 </pre>
                     </div>
@@ -1285,9 +1302,9 @@ import "github.com/SixofClubsss/dReams/rpc"
                             <li><a href="#dwidget-mobile-example">dwidget</a></li>
                             <li><a href="#bundle-mobile-example">bundle</a></li>
                         </ol>
-                        <a href="https://github.com/SixofClubsss/dReams"><img style="socialLink"
+                        <a href="https://github.com/dReam-dApps/dReams"><img style="socialLink"
                                 src="https://badgen.net/badge/icon/github?icon=github&amp;label"></a>
-                        <a href="https://pkg.go.dev/github.com/SixofClubsss/dReams"><img style="socialLink"
+                        <a href="https://pkg.go.dev/github.com/dReam-dApps/dReams"><img style="socialLink"
                                 src="https://img.shields.io/badge/godoc-reference-blue.svg"></a>
                     </div>
                 </div>
@@ -1320,39 +1337,55 @@ import "github.com/SixofClubsss/dReams/rpc"
 package main
 
 import (
-	"log"
-	"time"
+    "log"
+    "os"
+    "os/signal"
+    "syscall"
+    "time"
 
-	"github.com/SixofClubsss/dReams/rpc"
+    "github.com/dReam-dApps/dReams/rpc"
 )
 
 // dReams rpc connection example
 
+// Name my app
+const app_tag = "My_app"
+
 func main() {
-	// Name my app
-	app_tag := "My_app"
+    // Initialize rpc addresses to rpc.Daemon and rpc.Wallet vars
+    rpc.Daemon.Rpc = "127.0.0.1:10102"
+    rpc.Wallet.Rpc = "127.0.0.1:10103"
+    // Initialize rpc.Wallet.UserPass for rpc user:pass
 
-	// Initialize rpc addresses to rpc.Daemon and rpc.Wallet vars
-	rpc.Daemon.Rpc = "127.0.0.1:10102"
-	rpc.Wallet.Rpc = "127.0.0.1:10103"
-	// Initialize rpc.Wallet.UserPass for rpc user:pass
+    // Check for daemon connection
+    rpc.Ping()
 
-	// Check for daemon connection
-	rpc.Ping()
+    // Check for wallet connection and get address
+    rpc.GetAddress(app_tag)
 
-	// Check for wallet connection and get address
-	rpc.GetAddress(app_tag)
+    // Exit with ctrl-C
+    var exit bool
+    c := make(chan os.Signal, 1)
+    signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+    go func() {
+        <-c
+        log.Printf("[%s] Closing\n", app_tag)
+        exit = true
+    }()
 
-	// Loop will check daemon and wallet connection and
-	// keep running while daemon and wallet are connected
-	for rpc.Daemon.Connect &amp;&amp; rpc.Wallet.Connect {
-		rpc.Ping()
-		rpc.EchoWallet(app_tag)
-		log.Printf("[%s] Running\n", app_tag)
-		time.Sleep(time.Second)
-	}
+    // Loop will check for daemon and wallet connection and
+    // print wallet height and balance. It will keep
+    // running while daemon and wallet are connected or until exit
+    for !exit &amp;&amp; rpc.IsReady() {
+        rpc.Wallet.GetBalance()
+        rpc.GetWalletHeight(app_tag)
+        log.Printf("[%s] Height: %d   Dero Balance: %s\n", app_tag, rpc.Wallet.Height, rpc.FromAtomic(rpc.Wallet.Balance, 5))
+        time.Sleep(3 * time.Second)
+        rpc.Ping()
+        rpc.EchoWallet(app_tag)
+    }
 
-	log.Printf("[%s] Not connected\n", app_tag)
+    log.Printf("[%s] Not connected\n", app_tag)
 }
 </code>
 </pre>
@@ -1395,16 +1428,16 @@ import (
     "syscall"
     "time"
 
-    "github.com/SixofClubsss/dReams/menu"
-    "github.com/SixofClubsss/dReams/rpc"
+    "github.com/dReam-dApps/dReams/menu"
+    "github.com/dReam-dApps/dReams/rpc"
 )
 
 // dReams menu StartGnomon() example
 
-func main() {
-    // Name my app
-    app_tag := "My_app"
+// Name my app
+const app_tag = "My_app"
 
+func main() {
     // Initialize Gnomon fast sync
     menu.Gnomes.Fast = true
 
@@ -1416,8 +1449,9 @@ func main() {
     if rpc.Daemon.Connect {
         // Initialize NFA search filter and start Gnomon
         filter := []string{menu.NFA_SEARCH_FILTER}
-        menu.StartGnomon(app_tag, "gravdb", filter, 0, 0, nil)
+        menu.StartGnomon(app_tag, "boltdb", filter, 0, 0, nil)
 
+        // Exit with ctrl-C
         var exit bool
         c := make(chan os.Signal, 1)
         signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -1430,7 +1464,7 @@ func main() {
         for !exit && rpc.Daemon.Connect {
             contracts := menu.Gnomes.GetAllOwnersAndSCIDs()
             log.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
-            time.Sleep(time.Second)
+            time.Sleep(3 * time.Second)
             rpc.Ping()
         }
 
@@ -1479,17 +1513,17 @@ import (
     "fyne.io/fyne/v2"
     "fyne.io/fyne/v2/app"
 
-    "github.com/SixofClubsss/dReams/dwidget"
-    "github.com/SixofClubsss/dReams/menu"
-    "github.com/SixofClubsss/dReams/rpc"
+    "github.com/dReam-dApps/dReams/dwidget"
+    "github.com/dReam-dApps/dReams/menu"
+    "github.com/dReam-dApps/dReams/rpc"
 )
 
-// dReams dwidget VerticalEntries() example
+// dReams dwidget NewVerticalEntries() example
+
+// Name my app
+const app_tag = "My_app"
 
 func main() {
-    // Name my app
-    app_tag := "My_app"
-
     // Initialize Gnomon fast sync
     menu.Gnomes.Fast = true
 
@@ -1504,21 +1538,21 @@ func main() {
     // When window closes, stop Gnomon if running
     w.SetCloseIntercept(func() {
         if menu.Gnomes.Init {
-            menu.StopGnomon(app_tag)
+            menu.Gnomes.Stop(app_tag)
         }
         w.Close()
     })
 
     // Initialize dwidget connection box
-    connect_box := dwidget.VerticalEntries(app_tag, 1)
+    connect_box := dwidget.NewVerticalEntries(app_tag, 1)
 
     // When connection button is pressed we will connect to wallet rpc,
     // and start Gnomon with NFA search filter if it is not running
     connect_box.Button.OnTapped = func() {
         rpc.GetAddress(app_tag)
         rpc.Ping()
-        if rpc.Daemon.Connect &amp;&amp; !menu.Gnomes.Init &amp;&amp; !menu.Gnomes.Start {
-            go menu.StartGnomon(app_tag, []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
+        if rpc.Daemon.Connect &amp;&amp; !menu.Gnomes.IsInitialized() &amp;&amp; !menu.Gnomes.Start {
+            go menu.StartGnomon(app_tag, "boltdb", []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
         }
     }
 
@@ -1563,13 +1597,13 @@ import (
     "fyne.io/fyne/v2/canvas"
     "fyne.io/fyne/v2/container"
     "fyne.io/fyne/v2/widget"
-    "github.com/SixofClubsss/dReams/bundle"
+    "github.com/dReam-dApps/dReams/bundle"
 )
 
-func main() {
-    // Name my app
-    app_tag := "My_app"
+// Name my app
+const app_tag = "My_app"
 
+func main() {
     // Initialize app color to bundle var
     bundle.AppColor = color.Black
 
@@ -1607,7 +1641,7 @@ func main() {
     cont.Add(container.NewCenter(change_theme))
 
     // Add a image from bundle package
-    gnomon_img := canvas.NewImageFromResource(bundle.ResourceGnomoniconPng)
+    gnomon_img := canvas.NewImageFromResource(bundle.ResourceGnomonIconPng)
     gnomon_img.SetMinSize(fyne.NewSize(45, 45))
     cont.Add(container.NewCenter(gnomon_img))
 
