@@ -55,6 +55,7 @@ a:active {
 summary:hover {
   color: #49bdfc;
   text-decoration: underline #49bdfc;
+  cursor: pointer;
 }
 
 .titleShadow {
