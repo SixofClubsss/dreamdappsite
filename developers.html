@@ -673,7 +673,7 @@ import "github.com/dReam-dApps/dReams/rpc"
                             <li><a href="#dwidget-example">dwidget</a></li>
                             <li><a href="#bundle-example">bundle</a></li>
                         </ol>
-                        <a href="https://github.com/dReam-dApps/dReams"><img style="socialLink"
+                        <a href="https://github.com/dReam-dApps/Examples"><img style="socialLink"
                                 src="https://badgen.net/badge/icon/github?icon=github&amp;label"></a>
                         <a href="https://pkg.go.dev/github.com/dReam-dApps/dReams"><img style="socialLink"
                                 src="https://img.shields.io/badge/godoc-reference-blue.svg"></a>
@@ -793,17 +793,17 @@ func main() {
                     class="editable-style html-element silex-id-1685498314564-119 hide-on-mobile page-developers paged-element paged-element-visible">
                     <div class="silex-element-content">
                         <pre><code>
-package main
-
 import (
-    "log"
     "os"
     "os/signal"
+    "runtime"
     "syscall"
     "time"
 
+    "github.com/civilware/Gnomon/structures"
     "github.com/dReam-dApps/dReams/menu"
     "github.com/dReam-dApps/dReams/rpc"
+    "github.com/sirupsen/logrus"
 )
 
 // dReams menu StartGnomon() example
@@ -811,12 +811,18 @@ import (
 // Name my app
 const app_tag = "My_app"
 
+// Log output
+var logger = structures.Logger.WithFields(logrus.Fields{})
+
 func main() {
     // Initialize Gnomon fast sync
     menu.Gnomes.Fast = true
 
     // Initialize rpc address to rpc.Daemon var
     rpc.Daemon.Rpc = "127.0.0.1:10102"
+
+    // Initialize logger to Stdout
+    menu.InitLogrusLog(runtime.GOOS == "windows")
 
     rpc.Ping()
     // Check for daemon connection, if daemon is not connected we won't start Gnomon
@@ -837,7 +843,7 @@ func main() {
         // Gnomon will continue to run if daemon is connected
         for !exit &amp;&amp; rpc.Daemon.Connect {
             contracts := menu.Gnomes.GetAllOwnersAndSCIDs()
-            log.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
+            logger.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
             time.Sleep(3 * time.Second)
             rpc.Ping()
         }
@@ -846,7 +852,7 @@ func main() {
         menu.Gnomes.Stop(app_tag)
     }
 
-    log.Printf("[%s] Done\n", app_tag)
+    logger.Printf("[%s] Done\n", app_tag)
 }
 </code>
 </pre>
@@ -884,55 +890,60 @@ func main() {
 package main
 
 import (
-	"log"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+	"runtime"
 
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+
+	"github.com/dReam-dApps/dReams/dwidget"
+	"github.com/dReam-dApps/dReams/menu"
 	"github.com/dReam-dApps/dReams/rpc"
 )
 
-// dReams rpc connection example
+// dReams dwidget NewVerticalEntries() example
 
 // Name my app
 const app_tag = "My_app"
 
 func main() {
-	// Initialize rpc addresses to rpc.Daemon and rpc.Wallet vars
-	rpc.Daemon.Rpc = "127.0.0.1:10102"
-	rpc.Wallet.Rpc = "127.0.0.1:10103"
-	// Initialize rpc.Wallet.UserPass for rpc user:pass
+	// Initialize Gnomon fast sync
+	menu.Gnomes.Fast = true
 
-	// Check for daemon connection
-	rpc.Ping()
+	// Initialize logger to Stdout
+	menu.InitLogrusLog(runtime.GOOS == "windows")
 
-	// Check for wallet connection and get address
-	rpc.GetAddress(app_tag)
+	// Initialize fyne app
+	a := app.New()
 
-	// Exit with ctrl-C
-	var exit bool
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		<-c
-		log.Printf("[%s] Closing\n", app_tag)
-		exit = true
-	}()
+	// Initialize fyne window with size
+	w := a.NewWindow(app_tag)
+	w.Resize(fyne.NewSize(300, 100))
+	w.SetMaster()
 
-	// Loop will check for daemon and wallet connection and
-	// print wallet height and balance. It will keep
-	// running while daemon and wallet are connected or until exit
-	for !exit && rpc.IsReady() {
-		rpc.Wallet.GetBalance()
-		rpc.GetWalletHeight(app_tag)
-		log.Printf("[%s] Height: %d   Dero Balance: %s\n", app_tag, rpc.Wallet.Height, rpc.FromAtomic(rpc.Wallet.Balance, 5))
-		time.Sleep(3 * time.Second)
+	// When window closes, stop Gnomon if running
+	w.SetCloseIntercept(func() {
+		if menu.Gnomes.Init {
+			menu.Gnomes.Stop(app_tag)
+		}
+		w.Close()
+	})
+
+	// Initialize dwidget connection box
+	connect_box := dwidget.NewVerticalEntries(app_tag, 1)
+
+	// When connection button is pressed we will connect to wallet rpc,
+	// and start Gnomon with NFA search filter if it is not running
+	connect_box.Button.OnTapped = func() {
+		rpc.GetAddress(app_tag)
 		rpc.Ping()
-		rpc.EchoWallet(app_tag)
+		if rpc.Daemon.Connect && !menu.Gnomes.IsInitialized() && !menu.Gnomes.Start {
+			go menu.StartGnomon(app_tag, "boltdb", []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
+		}
 	}
 
-	log.Printf("[%s] Not connected\n", app_tag)
+	// Place connection box and start app
+	w.SetContent(connect_box.Container)
+	w.ShowAndRun()
 }
 </code>
                         </pre>
@@ -1304,7 +1315,7 @@ import "github.com/dReam-dApps/dReams/rpc"
                             <li><a href="#dwidget-mobile-example">dwidget</a></li>
                             <li><a href="#bundle-mobile-example">bundle</a></li>
                         </ol>
-                        <a href="https://github.com/dReam-dApps/dReams"><img style="socialLink"
+                        <a href="https://github.com/dReam-dApps/Examples"><img style="socialLink"
                                 src="https://badgen.net/badge/icon/github?icon=github&amp;label"></a>
                         <a href="https://pkg.go.dev/github.com/dReam-dApps/dReams"><img style="socialLink"
                                 src="https://img.shields.io/badge/godoc-reference-blue.svg"></a>
@@ -1424,14 +1435,16 @@ func main() {
 package main
 
 import (
-    "log"
     "os"
     "os/signal"
+    "runtime"
     "syscall"
     "time"
 
+    "github.com/civilware/Gnomon/structures"
     "github.com/dReam-dApps/dReams/menu"
     "github.com/dReam-dApps/dReams/rpc"
+    "github.com/sirupsen/logrus"
 )
 
 // dReams menu StartGnomon() example
@@ -1439,12 +1452,18 @@ import (
 // Name my app
 const app_tag = "My_app"
 
+// Log output
+var logger = structures.Logger.WithFields(logrus.Fields{})
+
 func main() {
     // Initialize Gnomon fast sync
     menu.Gnomes.Fast = true
 
     // Initialize rpc address to rpc.Daemon var
     rpc.Daemon.Rpc = "127.0.0.1:10102"
+
+    // Initialize logger to Stdout
+    menu.InitLogrusLog(runtime.GOOS == "windows")
 
     rpc.Ping()
     // Check for daemon connection, if daemon is not connected we won't start Gnomon
@@ -1465,7 +1484,7 @@ func main() {
         // Gnomon will continue to run if daemon is connected
         for !exit && rpc.Daemon.Connect {
             contracts := menu.Gnomes.GetAllOwnersAndSCIDs()
-            log.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
+            logger.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
             time.Sleep(3 * time.Second)
             rpc.Ping()
         }
@@ -1474,7 +1493,7 @@ func main() {
         menu.Gnomes.Stop(app_tag)
     }
 
-    log.Printf("[%s] Done\n", app_tag)
+    logger.Printf("[%s] Done\n", app_tag)
 }
 </code>
 </pre>
@@ -1512,12 +1531,14 @@ func main() {
 package main
 
 import (
-    "fyne.io/fyne/v2"
-    "fyne.io/fyne/v2/app"
+	"runtime"
 
-    "github.com/dReam-dApps/dReams/dwidget"
-    "github.com/dReam-dApps/dReams/menu"
-    "github.com/dReam-dApps/dReams/rpc"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+
+	"github.com/dReam-dApps/dReams/dwidget"
+	"github.com/dReam-dApps/dReams/menu"
+	"github.com/dReam-dApps/dReams/rpc"
 )
 
 // dReams dwidget NewVerticalEntries() example
@@ -1526,41 +1547,44 @@ import (
 const app_tag = "My_app"
 
 func main() {
-    // Initialize Gnomon fast sync
-    menu.Gnomes.Fast = true
+	// Initialize Gnomon fast sync
+	menu.Gnomes.Fast = true
 
-    // Initialize fyne app
-    a := app.New()
+	// Initialize logger to Stdout
+	menu.InitLogrusLog(runtime.GOOS == "windows")
 
-    // Initialize fyne window with size
-    w := a.NewWindow(app_tag)
-    w.Resize(fyne.NewSize(300, 100))
-    w.SetMaster()
+	// Initialize fyne app
+	a := app.New()
 
-    // When window closes, stop Gnomon if running
-    w.SetCloseIntercept(func() {
-        if menu.Gnomes.Init {
-            menu.Gnomes.Stop(app_tag)
-        }
-        w.Close()
-    })
+	// Initialize fyne window with size
+	w := a.NewWindow(app_tag)
+	w.Resize(fyne.NewSize(300, 100))
+	w.SetMaster()
 
-    // Initialize dwidget connection box
-    connect_box := dwidget.NewVerticalEntries(app_tag, 1)
+	// When window closes, stop Gnomon if running
+	w.SetCloseIntercept(func() {
+		if menu.Gnomes.Init {
+			menu.Gnomes.Stop(app_tag)
+		}
+		w.Close()
+	})
 
-    // When connection button is pressed we will connect to wallet rpc,
-    // and start Gnomon with NFA search filter if it is not running
-    connect_box.Button.OnTapped = func() {
-        rpc.GetAddress(app_tag)
-        rpc.Ping()
-        if rpc.Daemon.Connect &amp;&amp; !menu.Gnomes.IsInitialized() &amp;&amp; !menu.Gnomes.Start {
-            go menu.StartGnomon(app_tag, "boltdb", []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
-        }
-    }
+	// Initialize dwidget connection box
+	connect_box := dwidget.NewVerticalEntries(app_tag, 1)
 
-    // Place connection box and start app
-    w.SetContent(connect_box.Container)
-    w.ShowAndRun()
+	// When connection button is pressed we will connect to wallet rpc,
+	// and start Gnomon with NFA search filter if it is not running
+	connect_box.Button.OnTapped = func() {
+		rpc.GetAddress(app_tag)
+		rpc.Ping()
+		if rpc.Daemon.Connect && !menu.Gnomes.IsInitialized() && !menu.Gnomes.Start {
+			go menu.StartGnomon(app_tag, "boltdb", []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
+		}
+	}
+
+	// Place connection box and start app
+	w.SetContent(connect_box.Container)
+	w.ShowAndRun()
 }
 </code>
 </pre>
