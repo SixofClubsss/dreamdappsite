@@ -995,19 +995,6 @@ summary:hover {
   margin-right: auto;
 }
 
-.silex-id-1685485564550-3 {
-  width: 1000px;
-  min-height: 779px;
-  background-color: rgba(35, 36, 31, 1);
-  position: absolute;
-  top: 144px;
-  left: 83px;
-  border-width: 3px 3px 3px 3px;
-  border-style: inset;
-  border-color: rgba(255, 255, 255, 1);
-  border-radius: 12px 12px 12px 12px;
-}
-
 .silex-id-1685486054015-6 {
   width: 1000px;
   min-height: 334px;
@@ -1016,28 +1003,7 @@ summary:hover {
   left: 83px;
 }
 
-.silex-id-1685410323246-3 {
-  min-height: 1530px;
-  background-color: transparent;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  border-color: rgba(255, 255, 255, 1);
-  border-radius: 0px 0px 0px 0px;
-}
 
-.silex-id-1685487091051-8 {
-  width: 1166px;
-  min-height: 1430px;
-  background-color: rgba(0, 0, 0, 0.6);
-  position: absolute;
-  top: 5px;
-  left: 10px;
-  border-width: 6px 6px 6px 6px;
-  border-style: outset;
-  border-color: rgba(255, 255, 255, 1);
-  border-radius: 12px 12px 12px 12px;
-}
 
 .silex-id-1685488019455-9 {
   position: static;
@@ -1189,15 +1155,6 @@ summary:hover {
   left: 61px;
 }
 
-.silex-id-1685495559122-40 {
-  width: 1000px;
-  min-height: 144px;
-  background-color: transparent;
-  position: absolute;
-  top: 0px;
-  left: 83px;
-}
-
 .silex-id-1685496644815-48 {
   width: 1000px;
   min-height: 127px;
@@ -1235,12 +1192,59 @@ summary:hover {
   border-radius: 12px 12px 12px 12px;
 }
 
+/* Desktop rpc example */
+.silex-id-1685410323245-3 {
+  min-height: 1500px;
+  background-color: transparent;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  border-color: rgba(255, 255, 255, 1);
+  border-radius: 0px 0px 0px 0px;
+}
+
+.silex-id-1685410323245-4 {
+  width: 1166px;
+  min-height: 1400px;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  border-width: 6px 6px 6px 6px;
+  border-style: outset;
+  border-color: rgba(255, 255, 255, 1);
+  border-radius: 12px 12px 12px 12px;
+}
+
+.silex-id-1685410323245-5 {
+  width: 1000px;
+  min-height: 144px;
+  background-color: transparent;
+  position: absolute;
+  top: 0px;
+  left: 83px;
+}
+
+.silex-id-1685410323245-6 {
+  width: 1000px;
+  min-height: 800px;
+  background-color: rgba(35, 36, 31, 1);
+  position: absolute;
+  top: 144px;
+  left: 83px;
+  border-width: 3px 3px 3px 3px;
+  border-style: inset;
+  border-color: rgba(255, 255, 255, 1);
+  border-radius: 12px 12px 12px 12px;
+}
+
+/* Desktop dwidget example */
 .silex-id-1685498254972-105 {
   position: static;
 }
 
 .silex-id-1685498254972-106 {
-  min-height: 1591px;
+  min-height: 1650px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -1249,7 +1253,7 @@ summary:hover {
 
 .silex-id-1685498254972-107 {
   width: 1166px;
-  min-height: 1491px;
+  min-height: 1550px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5px;
@@ -1285,8 +1289,9 @@ summary:hover {
   position: static;
 }
 
+/* Desktop gnomes examples */
 .silex-id-1685498314564-116 {
-  min-height: 1571px;
+  min-height: 1700px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -1295,7 +1300,7 @@ summary:hover {
 
 .silex-id-1685498314564-117 {
   width: 1166px;
-  min-height: 1471px;
+  min-height: 1600px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5px;
@@ -1316,7 +1321,7 @@ summary:hover {
 
 .silex-id-1685498314564-119 {
   width: 1000px;
-  min-height: 1102;
+  min-height: 1100px;
   background-color: rgba(35, 36, 31, 1);
   position: absolute;
   top: 164px;
@@ -1327,12 +1332,60 @@ summary:hover {
   border-radius: 12px 12px 12px 12px;
 }
 
+/* Desktop menu example */
+.silex-id-1685498314565-115 {
+  position: static;
+}
+
+.silex-id-1685498314565-116 {
+  min-height: 1500px;
+  background-color: transparent;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.silex-id-1685498314565-117 {
+  width: 1166px;
+  min-height: 1400px;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  border-width: 6px 6px 6px 6px;
+  border-style: outset;
+  border-radius: 12px 12px 12px 12px;
+}
+
+.silex-id-1685498314565-118 {
+  width: 1000px;
+  min-height: 164px;
+  background-color: transparent;
+  position: absolute;
+  top: 0px;
+  left: 83px;
+}
+
+.silex-id-1685498314565-119 {
+  width: 1000px;
+  min-height: 1100px;
+  background-color: rgba(35, 36, 31, 1);
+  position: absolute;
+  top: 164px;
+  left: 83px;
+  border-width: 3px 3px 3px 3px;
+  border-style: inset;
+  border-color: rgba(255, 255, 255, 1);
+  border-radius: 12px 12px 12px 12px;
+}
+
+/* Desktop bundle example */
 .silex-id-1685498374186-125 {
   position: static;
 }
 
 .silex-id-1685498374186-126 {
-  min-height: 1875px;
+  min-height: 1800px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -1341,7 +1394,7 @@ summary:hover {
 
 .silex-id-1685498374186-127 {
   width: 1168px;
-  min-height: 1775px;
+  min-height: 1700px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5px;
@@ -1360,9 +1413,9 @@ summary:hover {
   left: 83px;
 }
 
-.silex-id-1685498374187-129 {
+.silex-id-1685498374186-129 {
   width: 1000px;
-  min-height: 1387;
+  min-height: 1400px;
   background-color: rgba(35, 36, 31, 1);
   position: absolute;
   top: 140px;
@@ -1472,7 +1525,7 @@ summary:hover {
 }
 
 .silex-id-1685519555264-26 {
-  min-height: 640px;
+  min-height: 700px;
   background-color: transparent;
   position: relative;
   margin-left: auto;
@@ -1481,7 +1534,7 @@ summary:hover {
 
 .silex-id-1685519555264-27 {
   width: 1166px;
-  min-height: 540px;
+  min-height: 600px;
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 10px;
@@ -1554,7 +1607,7 @@ summary:hover {
   min-height: 212px;
   background-color: transparent;
   position: absolute;
-  top: 252px;
+  top: 275px;
   left: 475.5px;
 }
 
@@ -1668,7 +1721,7 @@ summary:hover {
   width: 250px;
   height: 250px;
   position: absolute;
-  top: 290px;
+  top: 350px;
   left: 33px;
 }
 
@@ -1676,7 +1729,7 @@ summary:hover {
   width: 200px;
   height: 200px;
   position: absolute;
-  top: 331px;
+  top: 390px;
   left: 915px;
 }
 
@@ -1739,7 +1792,7 @@ summary:hover {
   min-height: 59px;
   background-color: transparent;
   position: absolute;
-  top: 480px;
+  top: 540px;
   left: 333px;
 }
 

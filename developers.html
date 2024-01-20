@@ -296,6 +296,7 @@
                             <li><a href="#dev-packages">Packages</a></li>
                             <ol>
                                 <li><a href="#rpc-example">rpc</a></li>
+                                <li><a href="#gnomes-example">gnomes</a></li>
                                 <li><a href="#menu-example">menu</a></li>
                                 <li><a href="#dwidget-example">dwidget</a></li>
                                 <li><a href="#bundle-example">bundle</a></li>
@@ -686,6 +687,7 @@ import "github.com/dReam-dApps/dReams/rpc"
                         <h3 style="color:white; font-family:Varela Round;">Examples</h3>
                         <ol style="color:white; font-family:Varela Round;">
                             <li><a href="#rpc-example">rpc</a></li>
+                            <li><a href="#gnomes-example">gnomes</a></li>
                             <li><a href="#menu-example">menu</a></li>
                             <li><a href="#dwidget-example">dwidget</a></li>
                             <li><a href="#bundle-example">bundle</a></li>
@@ -702,15 +704,16 @@ import "github.com/dReam-dApps/dReams/rpc"
     <section
         class="editable-style section-element silex-id-1685410323245-2 hide-on-mobile page-developers paged-element paged-element-visible">
         <div
-            class="editable-style container-element silex-id-1685410323246-3 silex-element-content website-width prevent-draggable">
+            class="editable-style container-element silex-id-1685410323245-3 silex-element-content website-width prevent-draggable">
             <div
-                class="editable-style container-element silex-id-1685487091051-8 hide-on-mobile page-developers paged-element mainShadow paged-element-visible">
+                class="editable-style container-element silex-id-1685410323245-4 hide-on-mobile page-developers paged-element mainShadow paged-element-visible">
                 <div
-                    class="editable-style html-element silex-id-1685495559122-40 style-documents textShadow hide-on-mobile page-developers paged-element paged-element-visible">
+                    class="editable-style html-element silex-id-1685410323245-5 style-documents textShadow hide-on-mobile page-developers paged-element paged-element-visible">
                     <div class="silex-element-content">
                         <h2 id="rpc-example" style="text-align:center;"><u>rpc</u></h2>
                         <p>
-                            The rpc package contains all of the basic functionality needed to set up clients, check
+                            The <code>rpc</code> package contains all of the basic functionality needed to set up
+                            clients, check
                             connectivity and read
                             blockchain and wallet information. There are arbitrary rpc calls which any dApp can make use
                             of such as the NFA
@@ -720,7 +723,7 @@ import "github.com/dReam-dApps/dReams/rpc"
                     </div>
                 </div>
                 <div
-                    class="editable-style html-element silex-id-1685485564550-3 hide-on-mobile page-developers paged-element paged-element-visible">
+                    class="editable-style html-element silex-id-1685410323245-6 hide-on-mobile page-developers paged-element paged-element-visible">
                     <div class="silex-element-content">
                         <pre><code>
 package main
@@ -792,17 +795,11 @@ func main() {
                 <div
                     class="editable-style html-element silex-id-1685498314564-118 textShadow style-documents hide-on-mobile page-developers paged-element paged-element-visible">
                     <div class="silex-element-content">
-                        <h2 id="menu-example" style="text-align:center;"><u>menu</u></h2>
-                        <p>The menu package contains the base components used for Gnomon indexing.
+                        <h2 id="gnomes-example" style="text-align:center;"><u>gnomes</u></h2>
+                        <p><code>gnomes</code> package contains the base components used for Gnomon indexing.
                             <code>StartGnomon()</code>allows apps to run
                             a instance of Gnomon with search filter and pass optional func for any custom index
-                            requirements. NFA related items
-                            such as the dReams NFA marketplace and asset controls can be independently imported for use
-                            in other dApps, it can
-                            be used with or without dReams filters. There are menu panels and custom Dero indicators
-                            that can be imported. This
-                            example starts Gnomon with NFA search
-                            filter.
+                            requirements.
                         </p>
                     </div>
                 </div>
@@ -810,20 +807,21 @@ func main() {
                     class="editable-style html-element silex-id-1685498314564-119 hide-on-mobile page-developers paged-element paged-element-visible">
                     <div class="silex-element-content">
                         <pre><code>
+package main
+
 import (
     "os"
     "os/signal"
-    "runtime"
     "syscall"
     "time"
 
     "github.com/civilware/Gnomon/structures"
-    "github.com/dReam-dApps/dReams/menu"
+    "github.com/dReam-dApps/dReams/gnomes"
     "github.com/dReam-dApps/dReams/rpc"
     "github.com/sirupsen/logrus"
 )
 
-// dReams menu StartGnomon() example
+// dReams gnomes StartGnomon() example
 
 // Name my app
 const app_tag = "My_app"
@@ -831,22 +829,25 @@ const app_tag = "My_app"
 // Log output
 var logger = structures.Logger.WithFields(logrus.Fields{})
 
+// Gnomon instance from gnomes package
+var gnomon = gnomes.NewGnomes()
+
 func main() {
-    // Initialize Gnomon fast sync
-    menu.Gnomes.Fast = true
+    // Initialize Gnomon fast sync true to sync db immediately
+    gnomon.SetFastsync(true, false, 100)
 
     // Initialize rpc address to rpc.Daemon var
     rpc.Daemon.Rpc = "127.0.0.1:10102"
 
     // Initialize logger to Stdout
-    menu.InitLogrusLog(runtime.GOOS == "windows")
+    gnomes.InitLogrusLog(logrus.InfoLevel)
 
     rpc.Ping()
     // Check for daemon connection, if daemon is not connected we won't start Gnomon
-    if rpc.Daemon.Connect {
+    if rpc.Daemon.IsConnected() {
         // Initialize NFA search filter and start Gnomon
-        filter := []string{menu.NFA_SEARCH_FILTER}
-        menu.StartGnomon(app_tag, "boltdb", filter, 0, 0, nil)
+        filter := []string{gnomes.NFA_SEARCH_FILTER}
+        gnomes.StartGnomon(app_tag, "boltdb", filter, 0, 0, nil)
 
         // Exit with ctrl-C
         var exit bool
@@ -858,18 +859,99 @@ func main() {
         }()
 
         // Gnomon will continue to run if daemon is connected
-        for !exit &amp;&amp; rpc.Daemon.Connect {
-            contracts := menu.Gnomes.GetAllOwnersAndSCIDs()
+        for !exit &amp;&amp; rpc.Daemon.IsConnected() {
+            contracts := gnomon.GetAllOwnersAndSCIDs()
             logger.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
             time.Sleep(3 * time.Second)
             rpc.Ping()
         }
 
         // Stop Gnomon
-        menu.Gnomes.Stop(app_tag)
+        gnomon.Stop(app_tag)
     }
 
     logger.Printf("[%s] Done\n", app_tag)
+}
+</code>
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685498314565-115 hide-on-mobile page-developers paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685498314565-116 silex-element-content website-width prevent-draggable">
+            <div
+                class="editable-style container-element silex-id-1685498314565-117 hide-on-mobile page-developers paged-element mainShadow paged-element-visible">
+                <div
+                    class="editable-style html-element silex-id-1685498314565-118 textShadow style-documents hide-on-mobile page-developers paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <h2 id="menu-example" style="text-align:center;"><u>menu</u></h2>
+                        <p>The <code>menu</code> package contains NFA related items such as the dReams NFA marketplace
+                            and asset controls can be independently
+                            imported for use in other dApps, it can be used with or without dReams filters. There are
+                            menu panels and custom Dero indicators that can be imported. This example shows how to
+                            import asset controls and market as app tabs.
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="editable-style html-element silex-id-1685498314565-119 hide-on-mobile page-developers paged-element paged-element-visible">
+                    <div class="silex-element-content">
+                        <pre><code>
+package main
+
+import (
+    "fyne.io/fyne/v2"
+    "fyne.io/fyne/v2/app"
+    "fyne.io/fyne/v2/canvas"
+    "fyne.io/fyne/v2/container"
+    "fyne.io/fyne/v2/layout"
+    "fyne.io/fyne/v2/widget"
+    dreams "github.com/dReam-dApps/dReams"
+    "github.com/dReam-dApps/dReams/bundle"
+    "github.com/dReam-dApps/dReams/menu"
+)
+
+// dReams menu PlaceMarket and PlaceAsset example
+
+// Name my app
+const app_tag = "My_app"
+
+func main() {
+    // Initialize Fyne window app and window into dReams app object
+    a := app.New()
+    w := a.NewWindow(app_tag)
+    w.Resize(fyne.NewSize(900, 700))
+    d := dreams.AppObject{
+        App:    a,
+        Window: w,
+    }
+
+    // Simple asset profile with wallet name entry and theme select
+    line := canvas.NewLine(bundle.TextColor)
+    profile := []*widget.FormItem{}
+    profile = append(profile, widget.NewFormItem("Name", menu.NameEntry()))
+    profile = append(profile, widget.NewFormItem("", layout.NewSpacer()))
+    profile = append(profile, widget.NewFormItem("", container.NewVBox(line)))
+    profile = append(profile, widget.NewFormItem("Theme", menu.ThemeSelect(&d)))
+    profile = append(profile, widget.NewFormItem("", container.NewVBox(line)))
+
+    // Rescan button function in asset tab
+    rescan := func() {
+        // What you want to scan wallet for
+    }
+
+    // Place asset and market layouts into tabs
+    tabs := container.NewAppTabs(
+        container.NewTabItem("Assets", menu.PlaceAssets(app_tag, widget.NewForm(profile...), rescan, bundle.ResourceDReamsIconAltPng, &d)),
+        container.NewTabItem("Market", menu.PlaceMarket(&d)))
+
+    // Place tabs as window content and run app
+    d.Window.SetContent(tabs)
+    d.Window.ShowAndRun()
 }
 </code>
 </pre>
@@ -907,14 +989,13 @@ func main() {
 package main
 
 import (
-	"runtime"
+    "fyne.io/fyne/v2"
+    "fyne.io/fyne/v2/app"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
-
-	"github.com/dReam-dApps/dReams/dwidget"
-	"github.com/dReam-dApps/dReams/menu"
-	"github.com/dReam-dApps/dReams/rpc"
+    "github.com/dReam-dApps/dReams/dwidget"
+    "github.com/dReam-dApps/dReams/gnomes"
+    "github.com/dReam-dApps/dReams/rpc"
+    "github.com/sirupsen/logrus"
 )
 
 // dReams dwidget NewVerticalEntries() example
@@ -922,45 +1003,48 @@ import (
 // Name my app
 const app_tag = "My_app"
 
+// Gnomon instance from gnomes package
+var gnomon = gnomes.NewGnomes()
+
 func main() {
-	// Initialize Gnomon fast sync
-	menu.Gnomes.Fast = true
+    // Initialize Gnomon fast sync true to sync db immediately
+    gnomon.SetFastsync(true, false, 100)
 
-	// Initialize logger to Stdout
-	menu.InitLogrusLog(runtime.GOOS == "windows")
+    // Initialize logger to Stdout
+    gnomes.InitLogrusLog(logrus.InfoLevel)
 
-	// Initialize fyne app
-	a := app.New()
+    // Initialize fyne app
+    a := app.New()
 
-	// Initialize fyne window with size
-	w := a.NewWindow(app_tag)
-	w.Resize(fyne.NewSize(300, 100))
-	w.SetMaster()
+    // Initialize fyne window with size
+    w := a.NewWindow(app_tag)
+    w.Resize(fyne.NewSize(300, 100))
+    w.SetMaster()
 
-	// When window closes, stop Gnomon if running
-	w.SetCloseIntercept(func() {
-		if menu.Gnomes.Init {
-			menu.Gnomes.Stop(app_tag)
-		}
-		w.Close()
-	})
+    // When window closes, stop Gnomon if running
+    w.SetCloseIntercept(func() {
+        if gnomon.IsInitialized() {
+            gnomon.Stop(app_tag)
+        }
+        w.Close()
+    })
 
-	// Initialize dwidget connection box
-	connect_box := dwidget.NewVerticalEntries(app_tag, 1)
+    // Initialize dwidget connection box
+    connect_box := dwidget.NewVerticalEntries(app_tag, 1)
 
-	// When connection button is pressed we will connect to wallet rpc,
-	// and start Gnomon with NFA search filter if it is not running
-	connect_box.Button.OnTapped = func() {
-		rpc.GetAddress(app_tag)
-		rpc.Ping()
-		if rpc.Daemon.Connect && !menu.Gnomes.IsInitialized() && !menu.Gnomes.Start {
-			go menu.StartGnomon(app_tag, "boltdb", []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
-		}
-	}
+    // When connection button is pressed we will connect to wallet rpc,
+    // and start Gnomon with NFA search filter if it is not running
+    connect_box.Button.OnTapped = func() {
+        rpc.GetAddress(app_tag)
+        rpc.Ping()
+        if rpc.Daemon.Connect && !gnomon.IsInitialized() && !gnomon.IsStarting() {
+            go gnomes.StartGnomon(app_tag, "boltdb", []string{gnomes.NFA_SEARCH_FILTER}, 0, 0, nil)
+        }
+    }
 
-	// Place connection box and start app
-	w.SetContent(connect_box.Container)
-	w.ShowAndRun()
+    // Place connection box and start app
+    w.SetContent(connect_box.Container)
+    w.ShowAndRun()
 }
 </code>
                         </pre>
@@ -987,7 +1071,7 @@ func main() {
                     </div>
                 </div>
                 <div
-                    class="editable-style html-element silex-id-1685498374187-129 page-developers paged-element hide-on-mobile paged-element-visible">
+                    class="editable-style html-element silex-id-1685498374186-129 page-developers paged-element hide-on-mobile paged-element-visible">
                     <div class="silex-element-content">
                         <pre><code>
 package main
@@ -1001,6 +1085,7 @@ import (
     "fyne.io/fyne/v2/container"
     "fyne.io/fyne/v2/widget"
     "github.com/dReam-dApps/dReams/bundle"
+    "github.com/dReam-dApps/dReams/dwidget"
 )
 
 // Name my app
@@ -1022,8 +1107,8 @@ func main() {
 
     // Initialize fyne container and add some various widgets for viewing purposes
     cont := container.NewVBox()
-    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewEntry(), widget.NewButton("Button", nil)))
-    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewCheck("Check", nil), widget.NewButton("Button", nil)))
+    cont.Add(container.NewAdaptiveGrid(3, dwidget.NewCenterLabel("Label"), widget.NewEntry(), widget.NewButton("Button", nil)))
+    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewCheck("Check", nil), dwidget.NewLine(30, 30, bundle.TextColor)))
     cont.Add(widget.NewPasswordEntry())
     cont.Add(widget.NewSlider(0, 100))
 
@@ -1223,6 +1308,7 @@ func main() {
                         <li><a href="#dev-mobile-packages">Packages</a></li>
                         <ol>
                             <li><a href="#rpc-mobile-example">rpc</a></li>
+                            <li><a href="#gnomes-mobile-example">gnomes</a></li>
                             <li><a href="#menu-mobile-example">menu</a></li>
                             <li><a href="#dwidget-mobile-example">dwidget</a></li>
                             <li><a href="#bundle-mobile-example">bundle</a></li>
@@ -1328,6 +1414,7 @@ import "github.com/dReam-dApps/dReams/rpc"
                         <h3 style="color:white; font-family:Varela Round;">Examples</h3>
                         <ol style="color:white; font-family:Varela Round;">
                             <li><a href="#rpc-mobile-example">rpc</a></li>
+                            <li><a href="#gnomes-mobile-example">gnomes</a></li>
                             <li><a href="#menu-mobile-example">menu</a></li>
                             <li><a href="#dwidget-mobile-example">dwidget</a></li>
                             <li><a href="#bundle-mobile-example">bundle</a></li>
@@ -1430,19 +1517,13 @@ func main() {
             class="editable-style container-element silex-id-1685775162543-198 silex-element-content website-width prevent-draggable">
             <div class="editable-style container-element silex-id-1685775162543-199 hide-on-desktop mainShadow">
                 <div class="editable-style html-element silex-id-1685775162543-200 hide-on-desktop page-developers paged-element style-mobilecontent textShadow paged-element-visible"
-                    id="menu-mobile-example">
+                    id="gnomes-mobile-example">
                     <div class="silex-element-content">
-                        <h2 id="menu-example" style="text-align:center;"><u>menu</u></h2>
-                        <p>The menu package contains the base components used for Gnomon indexing.
+                        <h2 id="gnomes-example" style="text-align:center;"><u>gnomes</u></h2>
+                        <p><code>gnomes</code> package contains the base components used for Gnomon indexing.
                             <code>StartGnomon()</code>allows apps to run
                             a instance of Gnomon with search filter and pass optional func for any custom index
-                            requirements. NFA related items
-                            such as the dReams NFA marketplace and asset controls can be independently imported for use
-                            in other dApps, it can
-                            be used with or without dReams filters. There are menu panels and custom Dero indicators
-                            that can be imported. This
-                            example starts Gnomon with NFA search
-                            filter.
+                            requirements.
                         </p>
                     </div>
                 </div>
@@ -1454,17 +1535,16 @@ package main
 import (
     "os"
     "os/signal"
-    "runtime"
     "syscall"
     "time"
 
     "github.com/civilware/Gnomon/structures"
-    "github.com/dReam-dApps/dReams/menu"
+    "github.com/dReam-dApps/dReams/gnomes"
     "github.com/dReam-dApps/dReams/rpc"
     "github.com/sirupsen/logrus"
 )
 
-// dReams menu StartGnomon() example
+// dReams gnomes StartGnomon() example
 
 // Name my app
 const app_tag = "My_app"
@@ -1472,22 +1552,25 @@ const app_tag = "My_app"
 // Log output
 var logger = structures.Logger.WithFields(logrus.Fields{})
 
+// Gnomon instance from gnomes package
+var gnomon = gnomes.NewGnomes()
+
 func main() {
-    // Initialize Gnomon fast sync
-    menu.Gnomes.Fast = true
+    // Initialize Gnomon fast sync true to sync db immediately
+    gnomon.SetFastsync(true, false, 100)
 
     // Initialize rpc address to rpc.Daemon var
     rpc.Daemon.Rpc = "127.0.0.1:10102"
 
     // Initialize logger to Stdout
-    menu.InitLogrusLog(runtime.GOOS == "windows")
+    gnomes.InitLogrusLog(logrus.InfoLevel)
 
     rpc.Ping()
     // Check for daemon connection, if daemon is not connected we won't start Gnomon
-    if rpc.Daemon.Connect {
+    if rpc.Daemon.IsConnected() {
         // Initialize NFA search filter and start Gnomon
-        filter := []string{menu.NFA_SEARCH_FILTER}
-        menu.StartGnomon(app_tag, "boltdb", filter, 0, 0, nil)
+        filter := []string{gnomes.NFA_SEARCH_FILTER}
+        gnomes.StartGnomon(app_tag, "boltdb", filter, 0, 0, nil)
 
         // Exit with ctrl-C
         var exit bool
@@ -1499,18 +1582,97 @@ func main() {
         }()
 
         // Gnomon will continue to run if daemon is connected
-        for !exit && rpc.Daemon.Connect {
-            contracts := menu.Gnomes.GetAllOwnersAndSCIDs()
+        for !exit && rpc.Daemon.IsConnected() {
+            contracts := gnomon.GetAllOwnersAndSCIDs()
             logger.Printf("[%s] Index contains %d contracts\n", app_tag, len(contracts))
             time.Sleep(3 * time.Second)
             rpc.Ping()
         }
 
         // Stop Gnomon
-        menu.Gnomes.Stop(app_tag)
+        gnomon.Stop(app_tag)
     }
 
     logger.Printf("[%s] Done\n", app_tag)
+}
+</code>
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section
+        class="editable-style section-element silex-id-1685775162543-197 hide-on-desktop page-developers paged-element paged-element-visible">
+        <div
+            class="editable-style container-element silex-id-1685775162543-198 silex-element-content website-width prevent-draggable">
+            <div class="editable-style container-element silex-id-1685775162543-199 hide-on-desktop mainShadow">
+                <div class="editable-style html-element silex-id-1685775162543-200 hide-on-desktop page-developers paged-element style-mobilecontent textShadow paged-element-visible"
+                    id="menu-mobile-example">
+                    <div class="silex-element-content">
+                        <h2 id="menu-example" style="text-align:center;"><u>menu</u></h2>
+                        <p>The <code>menu</code> package contains NFA related items such as the dReams NFA marketplace
+                            and asset controls can be independently
+                            imported for use in other dApps, it can be used with or without dReams filters. There are
+                            menu panels and custom Dero indicators that can be imported. This example shows how to
+                            import asset controls and market as app tabs.
+                        </p>
+                    </div>
+                </div>
+                <div class="editable-style html-element silex-id-1685775162543-201">
+                    <div class="silex-element-content">
+                        <pre><code>
+package main
+
+import (
+    "fyne.io/fyne/v2"
+    "fyne.io/fyne/v2/app"
+    "fyne.io/fyne/v2/canvas"
+    "fyne.io/fyne/v2/container"
+    "fyne.io/fyne/v2/layout"
+    "fyne.io/fyne/v2/widget"
+    dreams "github.com/dReam-dApps/dReams"
+    "github.com/dReam-dApps/dReams/bundle"
+    "github.com/dReam-dApps/dReams/menu"
+)
+
+// dReams menu PlaceMarket and PlaceAsset example
+
+// Name my app
+const app_tag = "My_app"
+
+func main() {
+    // Initialize Fyne window app and window into dReams app object
+    a := app.New()
+    w := a.NewWindow(app_tag)
+    w.Resize(fyne.NewSize(900, 700))
+    d := dreams.AppObject{
+        App:    a,
+        Window: w,
+    }
+
+    // Simple asset profile with wallet name entry and theme select
+    line := canvas.NewLine(bundle.TextColor)
+    profile := []*widget.FormItem{}
+    profile = append(profile, widget.NewFormItem("Name", menu.NameEntry()))
+    profile = append(profile, widget.NewFormItem("", layout.NewSpacer()))
+    profile = append(profile, widget.NewFormItem("", container.NewVBox(line)))
+    profile = append(profile, widget.NewFormItem("Theme", menu.ThemeSelect(&d)))
+    profile = append(profile, widget.NewFormItem("", container.NewVBox(line)))
+
+    // Rescan button function in asset tab
+    rescan := func() {
+        // What you want to scan wallet for
+    }
+
+    // Place asset and market layouts into tabs
+    tabs := container.NewAppTabs(
+        container.NewTabItem("Assets", menu.PlaceAssets(app_tag, widget.NewForm(profile...), rescan, bundle.ResourceDReamsIconAltPng, &d)),
+        container.NewTabItem("Market", menu.PlaceMarket(&d)))
+
+    // Place tabs as window content and run app
+    d.Window.SetContent(tabs)
+    d.Window.ShowAndRun()
 }
 </code>
 </pre>
@@ -1548,14 +1710,13 @@ func main() {
 package main
 
 import (
-	"runtime"
+    "fyne.io/fyne/v2"
+    "fyne.io/fyne/v2/app"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
-
-	"github.com/dReam-dApps/dReams/dwidget"
-	"github.com/dReam-dApps/dReams/menu"
-	"github.com/dReam-dApps/dReams/rpc"
+    "github.com/dReam-dApps/dReams/dwidget"
+    "github.com/dReam-dApps/dReams/gnomes"
+    "github.com/dReam-dApps/dReams/rpc"
+    "github.com/sirupsen/logrus"
 )
 
 // dReams dwidget NewVerticalEntries() example
@@ -1563,45 +1724,48 @@ import (
 // Name my app
 const app_tag = "My_app"
 
+// Gnomon instance from gnomes package
+var gnomon = gnomes.NewGnomes()
+
 func main() {
-	// Initialize Gnomon fast sync
-	menu.Gnomes.Fast = true
+    // Initialize Gnomon fast sync true to sync db immediately
+    gnomon.SetFastsync(true, false, 100)
 
-	// Initialize logger to Stdout
-	menu.InitLogrusLog(runtime.GOOS == "windows")
+    // Initialize logger to Stdout
+    gnomes.InitLogrusLog(logrus.InfoLevel)
 
-	// Initialize fyne app
-	a := app.New()
+    // Initialize fyne app
+    a := app.New()
 
-	// Initialize fyne window with size
-	w := a.NewWindow(app_tag)
-	w.Resize(fyne.NewSize(300, 100))
-	w.SetMaster()
+    // Initialize fyne window with size
+    w := a.NewWindow(app_tag)
+    w.Resize(fyne.NewSize(300, 100))
+    w.SetMaster()
 
-	// When window closes, stop Gnomon if running
-	w.SetCloseIntercept(func() {
-		if menu.Gnomes.Init {
-			menu.Gnomes.Stop(app_tag)
-		}
-		w.Close()
-	})
+    // When window closes, stop Gnomon if running
+    w.SetCloseIntercept(func() {
+        if gnomon.IsInitialized() {
+            gnomon.Stop(app_tag)
+        }
+        w.Close()
+    })
 
-	// Initialize dwidget connection box
-	connect_box := dwidget.NewVerticalEntries(app_tag, 1)
+    // Initialize dwidget connection box
+    connect_box := dwidget.NewVerticalEntries(app_tag, 1)
 
-	// When connection button is pressed we will connect to wallet rpc,
-	// and start Gnomon with NFA search filter if it is not running
-	connect_box.Button.OnTapped = func() {
-		rpc.GetAddress(app_tag)
-		rpc.Ping()
-		if rpc.Daemon.Connect && !menu.Gnomes.IsInitialized() && !menu.Gnomes.Start {
-			go menu.StartGnomon(app_tag, "boltdb", []string{menu.NFA_SEARCH_FILTER}, 0, 0, nil)
-		}
-	}
+    // When connection button is pressed we will connect to wallet rpc,
+    // and start Gnomon with NFA search filter if it is not running
+    connect_box.Button.OnTapped = func() {
+        rpc.GetAddress(app_tag)
+        rpc.Ping()
+        if rpc.Daemon.Connect && !gnomon.IsInitialized() && !gnomon.IsStarting() {
+            go gnomes.StartGnomon(app_tag, "boltdb", []string{gnomes.NFA_SEARCH_FILTER}, 0, 0, nil)
+        }
+    }
 
-	// Place connection box and start app
-	w.SetContent(connect_box.Container)
-	w.ShowAndRun()
+    // Place connection box and start app
+    w.SetContent(connect_box.Container)
+    w.ShowAndRun()
 }
 </code>
 </pre>
@@ -1641,6 +1805,7 @@ import (
     "fyne.io/fyne/v2/container"
     "fyne.io/fyne/v2/widget"
     "github.com/dReam-dApps/dReams/bundle"
+    "github.com/dReam-dApps/dReams/dwidget"
 )
 
 // Name my app
@@ -1662,8 +1827,8 @@ func main() {
 
     // Initialize fyne container and add some various widgets for viewing purposes
     cont := container.NewVBox()
-    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewEntry(), widget.NewButton("Button", nil)))
-    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewCheck("Check", nil), widget.NewButton("Button", nil)))
+    cont.Add(container.NewAdaptiveGrid(3, dwidget.NewCenterLabel("Label"), widget.NewEntry(), widget.NewButton("Button", nil)))
+    cont.Add(container.NewAdaptiveGrid(3, widget.NewLabel("Label"), widget.NewCheck("Check", nil), dwidget.NewLine(30, 30, bundle.TextColor)))
     cont.Add(widget.NewPasswordEntry())
     cont.Add(widget.NewSlider(0, 100))
 
